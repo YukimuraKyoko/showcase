@@ -27,7 +27,6 @@ const PORTRAIT = '';
 const VIDEOS = {
   animation: 'assets/videos/animations1.mp4',
   modeling:  'assets/videos/modeling1.mp4',
-  art:       'assets/videos/drawings.mp4',
   software:  '',
   japanese:  'assets/videos/vrc1.mp4',
   other:     'assets/videos/other.mp4',
@@ -59,13 +58,6 @@ const WORKS = {
     { title: 'Characters & Avatars', description: 'Add a short description.', media: '' },
     { title: 'Props', description: 'Add a short description.', media: '' },
     { title: 'Environments', description: 'Add a short description.', media: '' },
-  ],
-
-  // ---------- Other Art Works ----------
-  art: [
-    { title: 'Artwork 01', description: 'Add a short description.', media: '' },
-    { title: 'Artwork 02', description: 'Add a short description.', media: '' },
-    { title: 'Artwork 03', description: 'Add a short description.', media: '' },
   ],
 
   // ---------- Software Developer ----------
@@ -105,6 +97,13 @@ const WORKS = {
   warehouse: [
     { title: 'Truepill Warehouse', description: 'Add a short description.', media: '' },
     { title: 'Amazon Warehouse', description: 'Add a short description.', media: '' },
+  ],
+
+  // ---------- Other > Drawing ----------
+  drawing: [
+    { title: 'Drawing 01', description: 'Add a short description.', media: '' },
+    { title: 'Drawing 02', description: 'Add a short description.', media: '' },
+    { title: 'Drawing 03', description: 'Add a short description.', media: '' },
   ],
 
   // ---------- Certificates ----------
@@ -613,10 +612,6 @@ footer .social {
     <div class="reveal"><h2>3D Modeling</h2><p class="lead">Characters, avatars, props and environments.</p><div class="grid" data-group="modeling"></div></div>
   </section>
 
-  <section id="art" data-label="Other Art Works">
-    <div class="reveal"><h2>Other Art Works</h2><p class="lead">Illustration and experiments outside of 3D.</p><div class="grid" data-group="art"></div></div>
-  </section>
-
   <section id="software" data-label="Software Developer">
     <div class="reveal"><h2>Software Developer</h2><p class="lead">VR, game engines, creative coding and teaching.</p><div class="grid" data-group="software"></div></div>
   </section>
@@ -635,6 +630,7 @@ footer .social {
       <h3>eBay</h3><div class="grid" data-group="ebay"></div>
       <h3>Retail</h3><div class="grid" data-group="retail"></div>
       <h3>Warehouse</h3><div class="grid" data-group="warehouse"></div>
+      <h3>Drawing</h3><div class="grid" data-group="drawing"></div>
     </div>
   </section>
 
@@ -724,7 +720,7 @@ if(PORTRAIT) document.getElementById('portrait').innerHTML=mediaTag(PORTRAIT);
 /* ---- nav + dots ---- */
 const sections=[...document.querySelectorAll('main section')];
 const nav=document.getElementById('nav'), dots=document.getElementById('dots');
-const labels={home:'Home',animation:'3D Animations',modeling:'3D Modeling',art:'Other Art',software:'Software',japanese:'Japanese',other:'Other',about:'About',certificates:'Certificates'};
+const labels={home:'Home',animation:'3D Animations',modeling:'3D Modeling',software:'Software',japanese:'Japanese',other:'Other',about:'About',certificates:'Certificates'};
 sections.forEach(s=>{
   const b=document.createElement('button'); b.textContent=labels[s.id]; b.dataset.go=s.id; nav.appendChild(b);
   const d=document.createElement('i'); d.dataset.go=s.id; d.title=s.dataset.label; dots.appendChild(d);
@@ -745,8 +741,8 @@ sections.forEach(s=>io.observe(s));
 
 /* ---------- WebGL background (video panels + hero model) ---------- */
 /* ---- video bridge ---- */
-const CATS=['animation','modeling','art','software','japanese','other'];
-const CAT_LABEL={animation:'3D Animations',modeling:'3D Modeling',art:'Other Art Works',software:'Software Developer',japanese:'Japanese',other:'Other'};
+const CATS=['animation','modeling','software','japanese','other'];
+const CAT_LABEL={animation:'3D Animations',modeling:'3D Modeling',software:'Software Developer',japanese:'Japanese',other:'Other'};
 const videoURLs={};
 let applyVideo=null;
 function setCategoryVideo(cat,url){ if(url) videoURLs[cat]=url; else delete videoURLs[cat]; if(applyVideo) applyVideo(cat,url||null); }
