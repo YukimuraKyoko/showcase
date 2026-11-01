@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tina Nguyen — Portfolio</title>
+<script>
+/* =====================================================================
+   EDIT HERE — everything you normally change is in this block.
+   The rest of the file is the page and the 3D code; you can leave it alone.
+   ===================================================================== */
+
+/* 1) SOCIAL BUTTONS — put your profile links in the quotes. */
+const SOCIAL = [
+  { name: 'LinkedIn',    icon: 'li', url: 'https://www.linkedin.com/' },
+  { name: 'Facebook',    icon: 'fb', url: 'https://www.facebook.com/' },
+  { name: 'eBay',        icon: 'eb', url: 'https://www.ebay.com/' },
+  { name: 'X / Twitter', icon: 'x',  url: 'https://x.com/' },
+  { name: 'Steam',       icon: 'st', url: 'https://steamcommunity.com/' },
+];
+
+/* 2) ABOUT PAGE PHOTO — a link to an image, or leave '' for none. */
+const PORTRAIT = '';
+
+/* 3) BACKGROUND VIDEO PER SECTION — a link to a looping .mp4/.webm.
+      Leave '' to show the placeholder panel. */
+const VIDEOS = {
+  animation: 'assets/videos/vrc1.mp4',
+  modeling:  '',
+  art:       '',
+  software:  '',
+  projects:  '',
+  other:     '',
+};
+
+/* 4) HERO 3D MODEL — the object that floats in front of the background.
+      Put a .glb file here, e.g. 'assets/models/my-avatar.glb'.
+      Leave '' to show only a wireframe sphere as a placeholder. */
+const HERO_MODEL = '';
+const HERO_SIZE  = 3.2;    // how big it appears (bigger number = bigger model)
+const HERO_SPIN  = true;   // true = slowly rotates, false = stays facing front
+const HERO_WIREFRAME_SPHERE = true;   // the faint sphere around it (shown with the placeholder)
+
+/* 5) THE WORKS (the cards on each page).
+      Each work is one line:  { title: '...', description: '...', media: '' }
+      - media: a link to an image or video (.mp4/.webm/.mov = video). '' = empty box.
+      - To add a work, copy a line. To remove one, delete its line. */
+const WORKS = {
+  // ---------- 3D Animations ----------
+  animation: [
+    { title: 'Character Animation', description: 'Add a short description.', media: '' },
+    { title: 'VFX & Lighting', description: 'Add a short description.', media: '' },
+    { title: 'VRChat Avatar Poses', description: 'Add a short description.', media: '' },
+    { title: 'Music Videos', description: 'Add a short description.', media: '' },
+  ],
+
+  // ---------- 3D Modeling ----------
+  modeling: [
+    { title: 'Characters & Avatars', description: 'Add a short description.', media: '' },
+    { title: 'Props', description: 'Add a short description.', media: '' },
+    { title: 'Environments', description: 'Add a short description.', media: '' },
+  ],
+
+  // ---------- Other Art Works ----------
+  art: [
+    { title: 'Artwork 01', description: 'Add a short description.', media: '' },
+    { title: 'Artwork 02', description: 'Add a short description.', media: '' },
+    { title: 'Artwork 03', description: 'Add a short description.', media: '' },
+  ],
+
+  // ---------- Software Developer ----------
+  software: [
+    { title: 'VR Developer', description: 'Add a short description.', media: '' },
+    { title: 'Unity Editor', description: 'Tools and scripts for the Unity Editor.', media: '' },
+    { title: 'Web p5 Projects', description: 'Creative coding sketches with p5.js.', media: '' },
+    { title: 'WebGL Projects', description: 'Real-time 3D in the browser.', media: '' },
+    { title: 'Coding Instructor', description: 'Teaching programming.', media: '' },
+  ],
+
+  // ---------- Other Projects > Japanese ----------
+  japanese: [
+    { title: 'VR Nihongo', description: 'Add a short description.', media: '' },
+    { title: 'Other Works', description: 'Add a short description.', media: '' },
+  ],
+
+  // ---------- Other > eBay ----------
+  ebay: [
+    { title: 'eBay', description: 'Add a short description.', media: '' },
+  ],
+
+  // ---------- Other > Retail ----------
+  retail: [
+    { title: 'CCSF Book Store', description: 'Add a short description.', media: '' },
+    { title: 'Japantown Retail', description: 'Add a short description.', media: '' },
+    { title: 'Round 1', description: 'Add a short description.', media: '' },
+  ],
+
+  // ---------- Other > Warehouse ----------
+  warehouse: [
+    { title: 'Truepill Warehouse', description: 'Add a short description.', media: '' },
+    { title: 'Amazon Warehouse', description: 'Add a short description.', media: '' },
+  ],
+
+  // ---------- Certificates ----------
+  certs: [
+    { title: 'Certificate 01', description: 'Issuer · Year', media: '' },
+    { title: 'Certificate 02', description: 'Issuer · Year', media: '' },
+    { title: 'Certificate 03', description: 'Issuer · Year', media: '' },
+  ],
+
+};
+</script>
+<style>
+/* =====================================================================
+   STYLES — grouped top to bottom in the order things appear on the page.
+   Quick tweaks: change colors in section 1, text sizes in section 4/5.
+   ===================================================================== */
+
+
+/* ---------------------------------------------------------------------
+   1. THEME — colors used everywhere. (--accent changes with scroll.)
+   --------------------------------------------------------------------- */
+:root {
+  --ink:    #f1eefc;                    /* main text */
+  --mute:   #a9a3c4;                    /* softer text */
+  --accent: hsl(265, 90%, 70%);         /* highlight color */
+  --glass:  rgba(18, 15, 38, .55);      /* card / button background */
+  --line:   rgba(255, 255, 255, .14);   /* thin borders */
+}
+
+
+/* ---------------------------------------------------------------------
+   2. BASE — resets, page background, and the layers behind the content
+   --------------------------------------------------------------------- */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: radial-gradient(circle at 30% 20%, #1b1040, #07060f 60%);
+  color: var(--ink);
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  line-height: 1.55;
+  overflow-x: hidden;
+}
+
+/* The WebGL canvas (video panels + 3D hero model) fills the screen behind everything */
+#gl {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  display: block;
+}
+
+/* Dark vignette over the canvas so text stays readable on top of videos */
+#shade {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: radial-gradient(ellipse at center, rgba(7, 6, 15, .15), rgba(7, 6, 15, .55));
+}
+
+/* All page sections sit above the canvas */
+main {
+  position: relative;
+  z-index: 5;
+}
+
+
+/* ---------------------------------------------------------------------
+   3. HEADER — name, navigation links, social buttons
+   --------------------------------------------------------------------- */
+header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 10px 22px;
+  background: linear-gradient(#07060fe6, #07060f00);
+  backdrop-filter: blur(6px);
+}
+
+.brand {                                /* "TINA NGUYEN" */
+  font-weight: 800;
+  font-size: 1.15rem;
+  letter-spacing: .04em;
+  white-space: nowrap;
+  cursor: pointer;
+  background: linear-gradient(90deg, #fff, var(--accent));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+nav {                                   /* row of section links */
+  display: flex;
+  gap: 4px;
+  flex: 1;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+nav::-webkit-scrollbar {
+  display: none;
+}
+
+nav button {
+  background: none;
+  border: 0;
+  border-radius: 999px;
+  padding: 6px 10px;
+  color: var(--mute);
+  font: inherit;
+  font-size: .85rem;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: .2s;
+}
+
+nav button:hover,
+nav button.on {                         /* .on = the section you're viewing */
+  color: #fff;
+  background: rgba(255, 255, 255, .12);
+}
+
+/* Social icon buttons (used in the header and the footer) */
+.social {
+  display: flex;
+  gap: 8px;
+}
+
+.social a {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  background: var(--glass);
+  border: 1px solid var(--line);
+  color: var(--ink);
+  transition: .2s;
+}
+
+.social a:hover {
+  transform: translateY(-3px);
+  background: var(--accent);
+  color: #0a0718;
+  box-shadow: 0 8px 24px -6px var(--accent);
+}
+
+.social svg {
+  width: 19px;
+  height: 19px;
+}
+
+/* Side dots that show / jump to the current section */
+.dots {
+  position: fixed;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.dots i {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, .25);
+  cursor: pointer;
+  transition: .2s;
+}
+
+.dots i.on {
+  background: var(--accent);
+  transform: scale(1.5);
+}
+
+
+/* ---------------------------------------------------------------------
+   4. SECTIONS & HOME (HERO)
+   --------------------------------------------------------------------- */
+section {                               /* every page is one full screen tall */
+  min-height: 100vh;
+  padding: 110px 7vw 70px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+section.hero {
+  align-items: flex-start;
+}
+
+.eyebrow {                              /* small label above a title */
+  margin-bottom: 10px;
+  font-size: .75rem;
+  letter-spacing: .3em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+h1 {                                    /* big "Tina Nguyen" */
+  font-size: clamp(3rem, 10vw, 7.5rem);
+  font-weight: 900;
+  line-height: .95;
+  letter-spacing: -.02em;
+}
+
+h1 span {
+  display: block;
+  background: linear-gradient(90deg, #fff, var(--accent));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.tag {                                  /* subtitle under the name */
+  margin-top: 22px;
+  max-width: 36ch;
+  font-size: clamp(1rem, 2vw, 1.35rem);
+  color: var(--mute);
+}
+
+.chips {                                /* row of small pills */
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 22px;
+}
+
+.chip {
+  padding: 5px 13px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--glass);
+  font-size: .8rem;
+  color: var(--mute);
+}
+
+.cta {                                  /* the two hero buttons */
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 30px;
+}
+
+.btn {
+  padding: 11px 22px;
+  border: 1px solid var(--accent);
+  border-radius: 999px;
+  background: var(--accent);
+  color: #0a0718;
+  font-size: .95rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: .2s;
+}
+
+.btn.ghost {                            /* outlined version */
+  background: transparent;
+  color: var(--ink);
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 28px -8px var(--accent);
+}
+
+
+/* ---------------------------------------------------------------------
+   5. HEADINGS & INTRO TEXT (every section after Home)
+   --------------------------------------------------------------------- */
+h2 {                                    /* section title */
+  margin-bottom: 6px;
+  font-size: clamp(2rem, 5vw, 3.4rem);
+  font-weight: 800;
+}
+
+.lead {                                 /* line under the title */
+  max-width: 60ch;
+  margin-bottom: 28px;
+  color: var(--mute);
+}
+
+h3 {                                    /* sub-heading, e.g. "Retail", "Warehouse" */
+  margin: 26px 0 12px;
+  font-size: 1.1rem;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+
+/* ---------------------------------------------------------------------
+   6. WORK CARDS — the grid of works in each section
+   --------------------------------------------------------------------- */
+.grid {                                 /* as many 250px+ columns as fit */
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 18px;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: var(--glass);
+  backdrop-filter: blur(10px);
+  transition: .25s;
+}
+
+.card:hover {
+  transform: translateY(-6px);
+  border-color: var(--accent);
+  box-shadow: 0 18px 40px -16px var(--accent);
+}
+
+.slot {                                 /* picture / video area at the top of a card */
+  position: relative;
+  aspect-ratio: 16 / 10;
+  background: repeating-linear-gradient(45deg,
+              rgba(255, 255, 255, .03) 0 12px,
+              rgba(255, 255, 255, .06) 12px 24px);   /* striped when empty */
+}
+
+.slot img,
+.slot video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.card .body {                           /* text area under the picture */
+  padding: 14px 16px 18px;
+}
+
+.card h4 {
+  margin-bottom: 4px;
+  font-size: 1.02rem;
+}
+
+.card p {
+  font-size: .88rem;
+  color: var(--mute);
+}
+
+
+/* ---------------------------------------------------------------------
+   7. ABOUT PAGE
+   --------------------------------------------------------------------- */
+.about {                                /* photo on the left, text on the right */
+  display: grid;
+  grid-template-columns: minmax(220px, 300px) 1fr;
+  gap: 34px;
+  align-items: start;
+}
+
+.portrait {
+  aspect-ratio: 3 / 4;
+  border-radius: 22px;
+}
+
+.about p {
+  max-width: 62ch;
+  margin-bottom: 14px;
+  color: var(--mute);
+}
+
+
+/* ---------------------------------------------------------------------
+   8. FOOTER
+   --------------------------------------------------------------------- */
+footer {
+  position: relative;
+  z-index: 5;
+  padding: 40px 7vw 50px;
+  text-align: center;
+  font-size: .85rem;
+  color: var(--mute);
+}
+
+footer .social {
+  justify-content: center;
+  margin-bottom: 14px;
+}
+
+
+/* ---------------------------------------------------------------------
+   9. SCROLL REVEAL — sections fade up when they come into view
+   --------------------------------------------------------------------- */
+.reveal {
+  opacity: 0;
+  transform: translateY(34px);
+  transition: opacity .8s, transform .8s;
+}
+
+.reveal.in {
+  opacity: 1;
+  transform: none;
+}
+
+
+/* ---------------------------------------------------------------------
+   10. MOBILE (screens under 760px wide)
+   --------------------------------------------------------------------- */
+@media (max-width: 760px) {
+  header  { flex-wrap: wrap; padding: 8px 12px; }
+  nav     { order: 3; flex-basis: 100%; }   /* links drop to their own row */
+  .about  { grid-template-columns: 1fr; }   /* photo stacks above text */
+  .dots   { display: none; }
+  section { padding-top: 130px; }
+}
+
+/* People who turn off animations in their system settings */
+@media (prefers-reduced-motion: reduce) {
+  html    { scroll-behavior: auto; }
+  .reveal { transition: none; opacity: 1; transform: none; }
+}
+</style>
+</head>
+<body>
+<canvas id="gl" aria-hidden="true"></canvas>
+<div id="shade"></div>
+
+<header>
+  <div class="brand" data-go="home">TINA NGUYEN</div>
+  <nav id="nav" aria-label="Sections"></nav>
+  <div class="social" id="socialTop"></div>
+</header>
+<div class="dots" id="dots"></div>
+
+<main>
+  <section id="home" class="hero" data-label="Home">
+    <div class="eyebrow">Portfolio</div>
+    <h1><span>Tina</span><span>Nguyen</span></h1>
+    <p class="tag">3D animator, 3D modeler, programmer &amp; teacher.</p>
+    <div class="chips">
+      <span class="chip">3D Animation</span><span class="chip">3D Modeling</span><span class="chip">VFX &amp; Lighting</span>
+      <span class="chip">Game Development</span><span class="chip">VR</span><span class="chip">Music Videos</span>
+    </div>
+    <div class="cta">
+      <button class="btn" data-go="animation">View my work</button>
+      <button class="btn ghost" data-go="about">About me</button>
+    </div>
+  </section>
+
+  <section id="animation" data-label="3D Animations">
+    <div class="reveal"><h2>3D Animations</h2><p class="lead">Character animation, VFX, lighting and music videos.</p><div class="grid" data-group="animation"></div></div>
+  </section>
+
+  <section id="modeling" data-label="3D Modeling">
+    <div class="reveal"><h2>3D Modeling</h2><p class="lead">Characters, avatars, props and environments.</p><div class="grid" data-group="modeling"></div></div>
+  </section>
+
+  <section id="art" data-label="Other Art Works">
+    <div class="reveal"><h2>Other Art Works</h2><p class="lead">Illustration and experiments outside of 3D.</p><div class="grid" data-group="art"></div></div>
+  </section>
+
+  <section id="software" data-label="Software Developer">
+    <div class="reveal"><h2>Software Developer</h2><p class="lead">VR, game engines, creative coding and teaching.</p><div class="grid" data-group="software"></div></div>
+  </section>
+
+  <section id="projects" data-label="Other Projects">
+    <div class="reveal">
+      <h2>Other Projects</h2>
+      <h3>Japanese</h3><div class="grid" data-group="japanese"></div>
+    </div>
+  </section>
+
+  <section id="other" data-label="Other">
+    <div class="reveal">
+      <h2>Other</h2><p class="lead">Work experience beyond art and code.</p>
+      <h3>eBay</h3><div class="grid" data-group="ebay"></div>
+      <h3>Retail</h3><div class="grid" data-group="retail"></div>
+      <h3>Warehouse</h3><div class="grid" data-group="warehouse"></div>
+    </div>
+  </section>
+
+  <section id="about" data-label="About Me">
+    <div class="reveal about">
+      <div class="card portrait"><div class="slot" id="portrait" style="height:100%;aspect-ratio:auto"></div></div>
+      <div>
+        <div class="eyebrow">About me</div>
+        <h2>Hi, I'm Tina Nguyen.</h2>
+        <p>I'm a 3D animator, 3D modeler, programmer and teacher. I make animated work, models and interactive experiences, from VR and game projects to creative coding for the web.</p>
+        <p>Replace this paragraph with your story: where you started, what you love making, and what you're looking for next.</p>
+        <div class="chips">
+          <span class="chip">3D Animation</span><span class="chip">3D Modeling</span><span class="chip">VFX</span><span class="chip">Lighting</span>
+          <span class="chip">Programming</span><span class="chip">Game Programming</span><span class="chip">Game Development</span><span class="chip">Music Videos</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="certificates" data-label="Certificates">
+    <div class="reveal"><h2>Certificates</h2><p class="lead">Training and credentials.</p><div class="grid" data-group="certs"></div></div>
+  </section>
+</main>
+
+<footer>
+  <div class="social" id="socialBottom"></div>
+  © <span id="yr"></span> Tina Nguyen
+</footer>
+
+<!-- three.js (3D library) -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<!-- loads .glb models -->
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+
+<script>
+/* =====================================================================
+   PAGE CODE — social icons, cards, navigation, then the WebGL background.
+   ===================================================================== */
+
+/* ---------- Page content & navigation ---------- */
+const ICONS = {
+  li:'<svg viewBox="0 0 24 24" fill="currentColor"><rect x="3" y="9" width="4" height="12" rx="1"/><circle cx="5" cy="5" r="2.2"/><path d="M10 9h3.8v1.8c.7-1.2 2-2.1 3.9-2.1 3.100 0 4.300 2 4.300 5.200V21h-4v-6.100c0-1.500-.5-2.400-1.800-2.400s-2.200.9-2.200 2.500V21h-4z"/></svg>',
+  fb:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M14 22v-8.500h2.900l.5-3.500H14V7.800c0-1 .4-1.800 1.900-1.800h1.600V3c-.3 0-1.300-.2-2.500-.2-2.700 0-4.500 1.600-4.500 4.600V10H7.500v3.500h3V22z"/></svg>',
+  eb:'<svg viewBox="0 0 24 24"><text x="12" y="16" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-weight="700" font-size="11" fill="currentColor" letter-spacing="-.5">ebay</text></svg>',
+  x:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.200" stroke-linecap="round"><path d="M4 4l16 16M20 4L4 20"/></svg>',
+  st:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.800"><circle cx="12" cy="12" r="9.500"/><circle cx="15.200" cy="9.500" r="3"/><circle cx="8.800" cy="15" r="2" fill="currentColor"/><path d="M10.300 14l3.200-2.800"/></svg>'
+};
+function socials(el){
+  el.innerHTML = SOCIAL.map(s=>`<a href="${s.url}" target="_blank" rel="noopener" aria-label="${s.name}" title="${s.name}">${ICONS[s.icon]}</a>`).join('');
+}
+socials(document.getElementById('socialTop'));
+socials(document.getElementById('socialBottom'));
+document.getElementById('yr').textContent = new Date().getFullYear();
+
+/* ---- build cards ---- */
+function mediaTag(u){
+  if(!u) return '';
+  return /\.(mp4|webm|mov)(\?|$)/i.test(u)
+    ? `<video src="${esc(u)}" muted loop autoplay playsinline></video>`
+    : `<img src="${esc(u)}" alt="" loading="lazy">`;
+}
+function esc(s){return s.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
+document.querySelectorAll('[data-group]').forEach(g=>{
+  g.innerHTML = (WORKS[g.dataset.group]||[]).map(({title:t,description:d,media:m})=>
+    `<article class="card"><div class="slot">${mediaTag(m)}</div><div class="body"><h4>${esc(t)}</h4><p>${esc(d)}</p></div></article>`).join('');
+});
+
+if(PORTRAIT) document.getElementById('portrait').innerHTML=mediaTag(PORTRAIT);
+
+/* ---- nav + dots ---- */
+const sections=[...document.querySelectorAll('main section')];
+const nav=document.getElementById('nav'), dots=document.getElementById('dots');
+const labels={home:'Home',animation:'3D Animations',modeling:'3D Modeling',art:'Other Art',software:'Software',projects:'Projects',other:'Other',about:'About',certificates:'Certificates'};
+sections.forEach(s=>{
+  const b=document.createElement('button'); b.textContent=labels[s.id]; b.dataset.go=s.id; nav.appendChild(b);
+  const d=document.createElement('i'); d.dataset.go=s.id; d.title=s.dataset.label; dots.appendChild(d);
+});
+document.addEventListener('click',e=>{
+  const t=e.target.closest('[data-go]'); if(!t) return;
+  document.getElementById(t.dataset.go).scrollIntoView({behavior:'smooth'});
+});
+const io=new IntersectionObserver(es=>es.forEach(en=>{
+  if(en.isIntersecting){
+    en.target.querySelectorAll?.('.reveal').forEach(r=>r.classList.add('in'));
+    document.querySelectorAll('[data-go]').forEach(x=>{ if(x.tagName==='BUTTON'||x.tagName==='I') x.classList.toggle('on',x.dataset.go===en.target.id)});
+    current=sections.indexOf(en.target);
+  }
+}),{threshold:.35});
+let current=0;
+sections.forEach(s=>io.observe(s));
+
+/* ---------- WebGL background (video panels + hero model) ---------- */
+/* ---- video bridge ---- */
+const CATS=['animation','modeling','art','software','projects','other'];
+const CAT_LABEL={animation:'3D Animations',modeling:'3D Modeling',art:'Other Art Works',software:'Software Developer',projects:'Other Projects',other:'Other'};
+const videoURLs={};
+let applyVideo=null;
+function setCategoryVideo(cat,url){ if(url) videoURLs[cat]=url; else delete videoURLs[cat]; if(applyVideo) applyVideo(cat,url||null); }
+
+/* ---- WebGL background ---- */
+(function(){
+  const canvas=document.getElementById('gl');
+  if(!window.THREE){return;}
+  let renderer;
+  try{renderer=new THREE.WebGLRenderer({canvas,antialias:true,alpha:true});}catch(e){return;}
+  renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+  const scene=new THREE.Scene();
+  const camera=new THREE.PerspectiveCamera(55,1,.1,100);
+  camera.position.z=8;
+
+  scene.add(new THREE.AmbientLight(0xffffff,.5));
+  const key=new THREE.DirectionalLight(0xffffff,.9); key.position.set(4,6,5); scene.add(key);
+  const p1=new THREE.PointLight(0xff4fd8,1.6,30); p1.position.set(-6,2,4); scene.add(p1);
+  const p2=new THREE.PointLight(0x4fd8ff,1.6,30); p2.position.set(6,-3,3); scene.add(p2);
+
+  const hero=new THREE.Group(); scene.add(hero);
+  // Faint wireframe sphere (placeholder / frame around the model)
+  const cage=new THREE.Mesh(new THREE.IcosahedronGeometry(2.5,1),new THREE.MeshBasicMaterial({color:0xffffff,wireframe:true,transparent:true,opacity:.18}));
+  cage.visible=HERO_WIREFRAME_SPHERE;
+  hero.add(cage);
+
+  // Hero model: loads HERO_MODEL (a .glb), centers it, and scales it to HERO_SIZE.
+  const heroModel=new THREE.Group(); hero.add(heroModel);
+  if(HERO_MODEL && THREE.GLTFLoader){
+    new THREE.GLTFLoader().load(HERO_MODEL,gltf=>{
+      const m=gltf.scene;
+      const box=new THREE.Box3().setFromObject(m), size=box.getSize(new THREE.Vector3()), c=box.getCenter(new THREE.Vector3());
+      m.position.sub(c);                                   // center at origin
+      const k=HERO_SIZE/Math.max(size.x,size.y,size.z);    // fit to HERO_SIZE
+      heroModel.scale.setScalar(k);
+      heroModel.add(m);
+    },undefined,err=>console.warn('Could not load hero model:',HERO_MODEL,err));
+  }
+
+  // star dust
+  const N=700, pos=new Float32Array(N*3);
+  for(let i=0;i<N;i++){const r=12+Math.random()*30,u=Math.random()*2-1,a=Math.random()*Math.PI*2,s=Math.sqrt(1-u*u);pos[i*3]=r*s*Math.cos(a);pos[i*3+1]=r*u;pos[i*3+2]=r*s*Math.sin(a)-10;}
+  const dg=new THREE.BufferGeometry(); dg.setAttribute('position',new THREE.BufferAttribute(pos,3));
+  const dust=new THREE.Points(dg,new THREE.PointsMaterial({size:.06,color:0xffffff,transparent:true,opacity:.6,depthWrite:false}));
+  dust.renderOrder=-2; scene.add(dust);
+
+  /* ---- video panels, one per category ---- */
+  const W=16,H=9;
+  const panels={};
+  function labelTexture(cat){
+    const c=document.createElement('canvas'); c.width=640; c.height=360;
+    const g=c.getContext('2d');
+    const gr=g.createLinearGradient(0,0,640,360); gr.addColorStop(0,'#2a1766'); gr.addColorStop(1,'#0e0a26');
+    g.fillStyle=gr; g.fillRect(0,0,640,360);
+    g.strokeStyle='rgba(255,255,255,.14)'; g.lineWidth=2;
+    for(let i=0;i<760;i+=44){g.beginPath();g.moveTo(i,0);g.lineTo(i-140,360);g.stroke();}
+    g.fillStyle='#fff'; g.textAlign='center'; g.font='700 42px system-ui,sans-serif'; g.fillText(CAT_LABEL[cat],320,185);
+    g.font='20px system-ui,sans-serif'; g.fillStyle='rgba(255,255,255,.6)'; g.fillText('video placeholder',320,225);
+    return new THREE.CanvasTexture(c);
+  }
+  CATS.forEach((cat,i)=>{
+    const labelTex=labelTexture(cat);
+    const mat=new THREE.MeshBasicMaterial({map:labelTex,side:THREE.DoubleSide,fog:false,transparent:true});
+    const mesh=new THREE.Mesh(new THREE.PlaneGeometry(W,H),mat);
+    const frame=new THREE.LineSegments(new THREE.EdgesGeometry(mesh.geometry),new THREE.LineBasicMaterial({color:0xffffff,transparent:true,opacity:.55}));
+    mesh.add(frame);
+    mesh.scale.setScalar(.12); mesh.position.set(0,0,-25);
+    scene.add(mesh);
+    panels[cat]={mesh,mat,frame,i,labelTex,tex:null,video:null,bright:1,off:Math.random()*10};
+  });
+  applyVideo=function(cat,url){
+    const p=panels[cat]; if(!p) return;
+    if(p.video){p.video.pause();p.video.removeAttribute('src');p.video.load();p.video=null;}
+    if(p.tex){p.tex.dispose();p.tex=null;}
+    p.mat.map=p.labelTex; p.mat.needsUpdate=true;
+    if(!url) return;
+    const v=document.createElement('video');
+    v.muted=true; v.loop=true; v.playsInline=true; v.autoplay=true; v.crossOrigin='anonymous'; v.src=url;
+    v.addEventListener('loadeddata',()=>{
+      if(p.video!==v) return;
+      const tex=new THREE.VideoTexture(v); tex.minFilter=THREE.LinearFilter; tex.generateMipmaps=false;
+      p.tex=tex; p.mat.map=tex; p.mat.needsUpdate=true;
+    });
+    p.video=v; v.play().catch(()=>{});
+  };
+  Object.keys(videoURLs).forEach(c=>applyVideo(c,videoURLs[c]));
+  addEventListener('pointerdown',()=>Object.values(panels).forEach(p=>p.video&&p.video.paused&&p.video.play().catch(()=>{})));
+
+  function resize(){const w=innerWidth,h=innerHeight;renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix();}
+  addEventListener('resize',resize); resize();
+
+  let mx=0,my=0,tx=0,ty=0;
+  addEventListener('pointermove',e=>{mx=e.clientX/innerWidth-.5;my=e.clientY/innerHeight-.5;});
+  const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let prog=0,hue=.72,mix=0;
+  const root=document.documentElement;
+  const clock=new THREE.Clock();
+  const dummy=new THREE.Object3D(), tq=new THREE.Quaternion(), tp=new THREE.Vector3();
+
+  function frame(){
+    const t=clock.getElapsedTime()*(reduce?.2:1);
+    const max=document.documentElement.scrollHeight-innerHeight;
+    const target=max>0?scrollY/max:0;
+    prog+=(target-prog)*.06;
+    const wide=innerWidth>760;
+
+    const id=sections[current]&&sections[current].id;
+    const active=panels[id]?id:null;
+    mix+=((active?1:0)-mix)*.06;
+
+    // hero model drifts as you scroll, and shrinks while a video fills the background
+    const tx0=wide?Math.cos(prog*Math.PI*6)*2.8+(prog<.05?1.8*(1-prog/.05):0):0;
+    hero.position.x+=(tx0-hero.position.x)*.05;
+    hero.position.y=Math.sin(t*.8)*.2-(wide?0:1.4);
+    // model only turns around its vertical axis (never tumbles upside-down)
+    heroModel.rotation.y=HERO_SPIN?t*.35+prog*Math.PI*2:0;
+    cage.rotation.y=-t*.15; cage.rotation.x=Math.sin(t*.25)*.4+prog*2;
+    hero.scale.setScalar((wide?1:.75)*(1-.55*mix));
+
+    hue=(0.72+prog*1.0)%1;
+    p1.color.setHSL((hue+.35)%1,.9,.6);
+    p2.color.setHSL((hue+.65)%1,.9,.6);
+    root.style.setProperty('--accent',`hsl(${Math.round(hue*360)},90%,70%)`);
+
+    // panels: the active category's panel flies to the back and fills the screen; the rest orbit
+    const d=14, vh=2*d*Math.tan(THREE.MathUtils.degToRad(camera.fov/2)), vw=vh*camera.aspect;
+    const bgScale=Math.max(vw/W,vh/H)*1.15;
+    CATS.forEach(cat=>{
+      const p=panels[cat], m=p.mesh; let s, bright;
+      if(cat===active){
+        tp.set(0,0,camera.position.z-d); tq.identity(); s=bgScale; bright=.6;
+        m.renderOrder=-1; p.mat.depthTest=false; p.frame.visible=false;
+      }else{
+        const a=p.i/CATS.length*Math.PI*2+t*.12;
+        const r=(wide?7.2:4.2)+Math.sin(t*.3+p.off)*.8;
+        tp.set(Math.cos(a)*r, Math.sin(t*.4+p.off)*2.4, Math.sin(a)*2-1);
+        dummy.position.copy(tp); dummy.lookAt(camera.position); tq.copy(dummy.quaternion);
+        s=wide?.15:.09; bright=active?.55:1;
+        m.renderOrder=0; p.mat.depthTest=true; p.frame.visible=true;
+      }
+      m.position.lerp(tp,.07); m.quaternion.slerp(tq,.07);
+      m.scale.setScalar(m.scale.x+(s-m.scale.x)*.07);
+      p.bright+=(bright-p.bright)*.08; p.mat.color.setRGB(p.bright,p.bright,p.bright);
+    });
+    dust.rotation.y=t*.01+prog*1.2;
+
+    tx+=(mx-tx)*.04; ty+=(my-ty)*.04;
+    camera.position.x=tx*1.2; camera.position.y=-ty*1.0;
+    camera.lookAt(0,0,0);
+    renderer.render(scene,camera);
+    requestAnimationFrame(frame);
+  }
+  frame();
+})();
+
+CATS.forEach(c=>{ if(VIDEOS[c]) setCategoryVideo(c,VIDEOS[c]); });
+</script>
+</body>
+</html>
