@@ -671,7 +671,7 @@ footer .social {
   nav     { order: 3; flex-basis: 100%; }   /* links drop to their own row */
   .about  { grid-template-columns: 1fr; }   /* photo stacks above text */
   .dots   { display: none; }
-  section { padding-top: 130px; }
+  section { padding-top: 175px; }          /* clears the taller phone header */
 }
 
 /* People who turn off animations in their system settings */
@@ -840,15 +840,22 @@ document.addEventListener('click',e=>{
   const t=e.target.closest('[data-go]'); if(!t) return;
   document.getElementById(t.dataset.go).scrollIntoView({behavior:'smooth'});
 });
-const io=new IntersectionObserver(es=>es.forEach(en=>{
+// Fade a section in as soon as any part of it is on screen
+// (a percentage threshold fails for sections taller than the screen, e.g. "Other" on phones).
+const revealIO=new IntersectionObserver(es=>es.forEach(en=>{
+  if(en.isIntersecting) en.target.querySelectorAll('.reveal').forEach(r=>r.classList.add('in'));
+}),{threshold:0,rootMargin:'0px 0px -8% 0px'});
+
+// The "current" section is whichever one crosses the middle of the screen
+// (drives the nav highlight, the side dots and which video fills the background).
+let current=0;
+const currentIO=new IntersectionObserver(es=>es.forEach(en=>{
   if(en.isIntersecting){
-    en.target.querySelectorAll?.('.reveal').forEach(r=>r.classList.add('in'));
     document.querySelectorAll('[data-go]').forEach(x=>{ if(x.tagName==='BUTTON'||x.tagName==='I') x.classList.toggle('on',x.dataset.go===en.target.id)});
     current=sections.indexOf(en.target);
   }
-}),{threshold:.35});
-let current=0;
-sections.forEach(s=>io.observe(s));
+}),{threshold:0,rootMargin:'-50% 0px -50% 0px'});
+sections.forEach(s=>{ revealIO.observe(s); currentIO.observe(s); });
 
 /* ---- language: EN / 日本語 ---- */
 let lang='en';
