@@ -41,78 +41,155 @@ const HERO_SPIN  = true;   // true = slowly rotates, false = stays facing front
 const HERO_WIREFRAME_SPHERE = true;   // the faint sphere around it (shown with the placeholder)
 
 /* 5) THE WORKS (the cards on each page).
-      Each work is one line:  { title: '...', description: '...', media: '' }
+      Each work:  { title: '...', description: '...', media: '',
+                    titleJa: '日本語タイトル', descriptionJa: '日本語の説明' }
+      (If a Japanese field is empty, the English text is shown.)
       - media: a link to an image or video (.mp4/.webm/.mov = video). '' = empty box.
       - To add a work, copy a line. To remove one, delete its line. */
 const WORKS = {
   // ---------- 3D Animations ----------
   animation: [
-    { title: 'Character Animation', description: 'Add a short description.', media: '' },
-    { title: 'VFX & Lighting', description: 'Add a short description.', media: '' },
-    { title: 'VRChat Avatar Poses', description: 'Add a short description.', media: '' },
-    { title: 'Music Videos', description: 'Add a short description.', media: '' },
+    { title: 'Character Animation', description: 'Add a short description.', media: '',
+      titleJa: 'キャラクターアニメーション', descriptionJa: 'ここに短い説明を入力してください。' },
+    { title: 'VFX & Lighting', description: 'Add a short description.', media: '',
+      titleJa: 'VFX・ライティング', descriptionJa: 'ここに短い説明を入力してください。' },
+    { title: 'VRChat Avatar Poses', description: 'Add a short description.', media: '',
+      titleJa: 'VRChatアバターのポーズ', descriptionJa: 'ここに短い説明を入力してください。' },
+    { title: 'Music Videos', description: 'Add a short description.', media: '',
+      titleJa: 'ミュージックビデオ', descriptionJa: 'ここに短い説明を入力してください。' },
   ],
 
   // ---------- 3D Modeling ----------
   modeling: [
-    { title: 'Characters & Avatars', description: 'Add a short description.', media: '' },
-    { title: 'Props', description: 'Add a short description.', media: '' },
-    { title: 'Environments', description: 'Add a short description.', media: '' },
+    { title: 'Characters & Avatars', description: 'Add a short description.', media: '',
+      titleJa: 'キャラクター・アバター', descriptionJa: 'ここに短い説明を入力してください。' },
+    { title: 'Props', description: 'Add a short description.', media: '',
+      titleJa: '小道具', descriptionJa: 'ここに短い説明を入力してください。' },
+    { title: 'Environments', description: 'Add a short description.', media: '',
+      titleJa: '背景・環境', descriptionJa: 'ここに短い説明を入力してください。' },
   ],
 
   // ---------- Software Developer ----------
   software: [
-    { title: 'VR Developer', description: 'Add a short description.', media: '' },
-    { title: 'Unity Editor', description: 'Tools and scripts for the Unity Editor.', media: '' },
-    { title: 'Web p5 Projects', description: 'Creative coding sketches with p5.js.', media: '' },
-    { title: 'WebGL Projects', description: 'Real-time 3D in the browser.', media: '' },
-    { title: 'Coding Instructor', description: 'Teaching programming.', media: '' },
+    { title: 'VR Developer', description: 'Add a short description.', media: '',
+      titleJa: 'VRデベロッパー', descriptionJa: 'ここに短い説明を入力してください。' },
+    { title: 'Unity Editor', description: 'Tools and scripts for the Unity Editor.', media: '',
+      titleJa: 'Unityエディタ', descriptionJa: 'Unityエディタ用のツールとスクリプト。' },
+    { title: 'Web p5 Projects', description: 'Creative coding sketches with p5.js.', media: '',
+      titleJa: 'Web p5プロジェクト', descriptionJa: 'p5.jsによるクリエイティブコーディング。' },
+    { title: 'WebGL Projects', description: 'Real-time 3D in the browser.', media: '',
+      titleJa: 'WebGLプロジェクト', descriptionJa: 'ブラウザで動くリアルタイム3D。' },
+    { title: 'Coding Instructor', description: 'Teaching programming.', media: '',
+      titleJa: 'プログラミング講師', descriptionJa: 'プログラミングを教えています。' },
   ],
 
   // ---------- Japanese (main category) > VR Nihongo ----------
   jpVR: [
-    { title: 'VR Nihongo', description: 'Learn Japanese in VR.', media: '' },
-    { title: 'VR Nihongo Demo', description: 'Add a short description.', media: '' },
+    { title: 'VR Nihongo', description: 'Learn Japanese in VR.', media: '',
+      titleJa: 'VR日本語', descriptionJa: 'VRで日本語を学ぶ。' },
+    { title: 'VR Nihongo Demo', description: 'Add a short description.', media: '',
+      titleJa: 'VR日本語デモ', descriptionJa: 'ここに短い説明を入力してください。' },
   ],
 
   // ---------- Japanese (main category) > Other Works ----------
   jpOther: [
-    { title: 'Japanese Work 01', description: 'Add a short description.', media: '' },
-    { title: 'Japanese Work 02', description: 'Add a short description.', media: '' },
+    { title: 'Japanese Work 01', description: 'Add a short description.', media: '',
+      titleJa: '日本語の作品 01', descriptionJa: 'ここに短い説明を入力してください。' },
+    { title: 'Japanese Work 02', description: 'Add a short description.', media: '',
+      titleJa: '日本語の作品 02', descriptionJa: 'ここに短い説明を入力してください。' },
   ],
 
   // ---------- Other > eBay ----------
   ebay: [
-    { title: 'eBay', description: 'Add a short description.', media: '' },
+    { title: 'eBay', description: 'Add a short description.', media: '',
+      titleJa: 'eBay', descriptionJa: 'ここに短い説明を入力してください。' },
   ],
 
   // ---------- Other > Retail ----------
   retail: [
-    { title: 'CCSF Book Store', description: 'Add a short description.', media: '' },
-    { title: 'Japantown Retail', description: 'Add a short description.', media: '' },
-    { title: 'Round 1', description: 'Add a short description.', media: '' },
+    { title: 'CCSF Book Store', description: 'Add a short description.', media: '',
+      titleJa: 'CCSFブックストア', descriptionJa: 'ここに短い説明を入力してください。' },
+    { title: 'Japantown Retail', description: 'Add a short description.', media: '',
+      titleJa: '日本町の小売店', descriptionJa: 'ここに短い説明を入力してください。' },
+    { title: 'Round 1', description: 'Add a short description.', media: '',
+      titleJa: 'ラウンドワン', descriptionJa: 'ここに短い説明を入力してください。' },
   ],
 
   // ---------- Other > Warehouse ----------
   warehouse: [
-    { title: 'Truepill Warehouse', description: 'Add a short description.', media: '' },
-    { title: 'Amazon Warehouse', description: 'Add a short description.', media: '' },
+    { title: 'Truepill Warehouse', description: 'Add a short description.', media: '',
+      titleJa: 'Truepill倉庫', descriptionJa: 'ここに短い説明を入力してください。' },
+    { title: 'Amazon Warehouse', description: 'Add a short description.', media: '',
+      titleJa: 'Amazon倉庫', descriptionJa: 'ここに短い説明を入力してください。' },
   ],
 
   // ---------- Other > Drawing ----------
   drawing: [
-    { title: 'Drawing 01', description: 'Add a short description.', media: '' },
-    { title: 'Drawing 02', description: 'Add a short description.', media: '' },
-    { title: 'Drawing 03', description: 'Add a short description.', media: '' },
+    { title: 'Drawing 01', description: 'Add a short description.', media: '',
+      titleJa: 'ドローイング 01', descriptionJa: 'ここに短い説明を入力してください。' },
+    { title: 'Drawing 02', description: 'Add a short description.', media: '',
+      titleJa: 'ドローイング 02', descriptionJa: 'ここに短い説明を入力してください。' },
+    { title: 'Drawing 03', description: 'Add a short description.', media: '',
+      titleJa: 'ドローイング 03', descriptionJa: 'ここに短い説明を入力してください。' },
   ],
 
   // ---------- Certificates ----------
   certs: [
-    { title: 'Certificate 01', description: 'Issuer · Year', media: '' },
-    { title: 'Certificate 02', description: 'Issuer · Year', media: '' },
-    { title: 'Certificate 03', description: 'Issuer · Year', media: '' },
+    { title: 'Certificate 01', description: 'Issuer · Year', media: '',
+      titleJa: '資格・証明書 01', descriptionJa: '発行元・年' },
+    { title: 'Certificate 02', description: 'Issuer · Year', media: '',
+      titleJa: '資格・証明書 02', descriptionJa: '発行元・年' },
+    { title: 'Certificate 03', description: 'Issuer · Year', media: '',
+      titleJa: '資格・証明書 03', descriptionJa: '発行元・年' },
   ],
 
+};
+
+/* 6) LANGUAGE — which language the page opens in, and all the page text.
+      'auto' = Japanese for visitors whose browser is set to Japanese (or whose
+      time zone is Japan), English for everyone else (e.g. the USA).
+      Use 'en' or 'ja' to force one. Visitors can always switch with the EN | 日本語 buttons. */
+const DEFAULT_LANG = 'auto';
+
+const TEXT = {
+  en: {
+    nav: { home:'Home', animation:'3D Animations', modeling:'3D Modeling', software:'Software', japanese:'Japanese', other:'Other', about:'About', certificates:'Certificates' },
+    heroEyebrow:'Portfolio',
+    heroTag:'3D animator, 3D modeler, programmer & teacher.',
+    ctaWork:'View my work', ctaAbout:'About me',
+    c_anim:'3D Animation', c_model:'3D Modeling', c_vfxl:'VFX & Lighting', c_gamedev:'Game Development', c_vr:'VR', c_mv:'Music Videos',
+    c_vfx:'VFX', c_light:'Lighting', c_prog:'Programming', c_gprog:'Game Programming',
+    h_animation:'3D Animations', l_animation:'Character animation, VFX, lighting and music videos.',
+    h_modeling:'3D Modeling', l_modeling:'Characters, avatars, props and environments.',
+    h_software:'Software Developer', l_software:'VR, game engines, creative coding and teaching.',
+    h_japanese:'Japanese', l_japanese:'Japanese language projects and works.',
+    h3_jpVR:'VR Nihongo', h3_jpOther:'Other Works', h3_drawing:'Drawing',
+    h_other:'Other', l_other:'Work experience beyond art and code.',
+    h3_ebay:'eBay', h3_retail:'Retail', h3_warehouse:'Warehouse',
+    aboutEyebrow:'About me', aboutH:"Hi, I'm Tina Nguyen.",
+    aboutP1:"I'm a 3D animator, 3D modeler, programmer and teacher. I make animated work, models and interactive experiences, from VR and game projects to creative coding for the web.",
+    aboutP2:"Replace this paragraph with your story: where you started, what you love making, and what you're looking for next.",
+    h_certificates:'Certificates', l_certificates:'Training and credentials.',
+  },
+  ja: {
+    nav: { home:'ホーム', animation:'3Dアニメーション', modeling:'3Dモデリング', software:'開発', japanese:'日本語', other:'その他', about:'自己紹介', certificates:'資格' },
+    heroEyebrow:'ポートフォリオ',
+    heroTag:'3Dアニメーター、3Dモデラー、プログラマー、講師。',
+    ctaWork:'作品を見る', ctaAbout:'自己紹介',
+    c_anim:'3Dアニメーション', c_model:'3Dモデリング', c_vfxl:'VFX・ライティング', c_gamedev:'ゲーム開発', c_vr:'VR', c_mv:'ミュージックビデオ',
+    c_vfx:'VFX', c_light:'ライティング', c_prog:'プログラミング', c_gprog:'ゲームプログラミング',
+    h_animation:'3Dアニメーション', l_animation:'キャラクターアニメーション、VFX、ライティング、ミュージックビデオ。',
+    h_modeling:'3Dモデリング', l_modeling:'キャラクター、アバター、小道具、背景。',
+    h_software:'ソフトウェア開発者', l_software:'VR、ゲームエンジン、クリエイティブコーディング、指導。',
+    h_japanese:'日本語', l_japanese:'日本語に関するプロジェクトと作品。',
+    h3_jpVR:'VR日本語', h3_jpOther:'その他の作品', h3_drawing:'ドローイング',
+    h_other:'その他', l_other:'アートやコード以外の職務経験。',
+    h3_ebay:'eBay', h3_retail:'小売', h3_warehouse:'倉庫',
+    aboutEyebrow:'自己紹介', aboutH:'はじめまして、Tina Nguyenです。',
+    aboutP1:'3Dアニメーター、3Dモデラー、プログラマー、講師です。アニメーション作品、モデル、インタラクティブな体験を制作しています。VRやゲームのプロジェクトから、Web向けのクリエイティブコーディングまで手がけています。',
+    aboutP2:'この文章をあなた自身のストーリーに置き換えてください。始めたきっかけ、作るのが好きなもの、これから目指すことなど。',
+    h_certificates:'資格・証明書', l_certificates:'研修・資格。',
+  },
 };
 </script>
 <style>
@@ -151,7 +228,7 @@ html {
 body {
   background: radial-gradient(circle at 30% 20%, hsl(calc(255 + var(--bh)), 60%, 16%), hsl(calc(250 + var(--bh)), 43%, 4%) 60%);
   color: var(--ink);
-  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Hiragino Sans", "Yu Gothic", "Noto Sans JP", sans-serif;
   line-height: 1.55;
   overflow-x: hidden;
 }
@@ -267,6 +344,33 @@ nav button.on {                         /* .on = the section you're viewing */
   box-shadow: 0 8px 24px -6px var(--accent);
 }
 
+/* Language switch (EN | 日本語) */
+.lang {
+  display: flex;
+  flex: none;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--glass);
+}
+
+.lang button {
+  padding: 5px 12px;
+  border: 0;
+  background: none;
+  color: var(--mute);
+  font: inherit;
+  font-size: .8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: .2s;
+}
+
+.lang button.on {
+  background: var(--accent);
+  color: #0a0718;
+}
+
 .social svg {
   width: 19px;
   height: 19px;
@@ -371,7 +475,7 @@ h1 span {
 
 .tag {                                  /* subtitle under the name */
   margin-top: 22px;
-  max-width: 36ch;
+  max-width: 44ch;
   font-size: clamp(1rem, 2vw, 1.35rem);
   color: var(--mute);
 }
@@ -584,6 +688,9 @@ footer .social {
 <header>
   <div class="brand" data-go="home">TINA NGUYEN</div>
   <nav id="nav" aria-label="Sections"></nav>
+  <div class="lang" id="lang" role="group" aria-label="Language">
+    <button data-lang="en">EN</button><button data-lang="ja">日本語</button>
+  </div>
   <input type="range" class="hue" id="hue" min="0" max="360" value="0" title="Change site color" aria-label="Change site color">
   <div class="social" id="socialTop"></div>
 </header>
@@ -591,46 +698,46 @@ footer .social {
 
 <main>
   <section id="home" class="hero" data-label="Home">
-    <div class="eyebrow">Portfolio</div>
+    <div class="eyebrow" data-t="heroEyebrow">Portfolio</div>
     <h1><span>Tina</span><span>Nguyen</span></h1>
-    <p class="tag">3D animator, 3D modeler, programmer &amp; teacher.</p>
+    <p class="tag" data-t="heroTag">3D animator, 3D modeler, programmer &amp; teacher.</p>
     <div class="chips">
-      <span class="chip">3D Animation</span><span class="chip">3D Modeling</span><span class="chip">VFX &amp; Lighting</span>
-      <span class="chip">Game Development</span><span class="chip">VR</span><span class="chip">Music Videos</span>
+      <span class="chip" data-t="c_anim">3D Animation</span><span class="chip" data-t="c_model">3D Modeling</span><span class="chip" data-t="c_vfxl">VFX &amp; Lighting</span>
+      <span class="chip" data-t="c_gamedev">Game Development</span><span class="chip" data-t="c_vr">VR</span><span class="chip" data-t="c_mv">Music Videos</span>
     </div>
     <div class="cta">
-      <button class="btn" data-go="animation">View my work</button>
-      <button class="btn ghost" data-go="about">About me</button>
+      <button class="btn" data-go="animation" data-t="ctaWork">View my work</button>
+      <button class="btn ghost" data-go="about" data-t="ctaAbout">About me</button>
     </div>
   </section>
 
   <section id="animation" data-label="3D Animations">
-    <div class="reveal"><h2>3D Animations</h2><p class="lead">Character animation, VFX, lighting and music videos.</p><div class="grid" data-group="animation"></div></div>
+    <div class="reveal"><h2 data-t="h_animation">3D Animations</h2><p class="lead" data-t="l_animation">Character animation, VFX, lighting and music videos.</p><div class="grid" data-group="animation"></div></div>
   </section>
 
   <section id="modeling" data-label="3D Modeling">
-    <div class="reveal"><h2>3D Modeling</h2><p class="lead">Characters, avatars, props and environments.</p><div class="grid" data-group="modeling"></div></div>
+    <div class="reveal"><h2 data-t="h_modeling">3D Modeling</h2><p class="lead" data-t="l_modeling">Characters, avatars, props and environments.</p><div class="grid" data-group="modeling"></div></div>
   </section>
 
   <section id="software" data-label="Software Developer">
-    <div class="reveal"><h2>Software Developer</h2><p class="lead">VR, game engines, creative coding and teaching.</p><div class="grid" data-group="software"></div></div>
+    <div class="reveal"><h2 data-t="h_software">Software Developer</h2><p class="lead" data-t="l_software">VR, game engines, creative coding and teaching.</p><div class="grid" data-group="software"></div></div>
   </section>
 
   <section id="japanese" data-label="Japanese">
     <div class="reveal">
-      <h2>Japanese</h2><p class="lead">Japanese language projects and works.</p>
-      <h3>VR Nihongo</h3><div class="grid" data-group="jpVR"></div>
-      <h3>Other Works</h3><div class="grid" data-group="jpOther"></div>
+      <h2 data-t="h_japanese">Japanese</h2><p class="lead" data-t="l_japanese">Japanese language projects and works.</p>
+      <h3 data-t="h3_jpVR">VR Nihongo</h3><div class="grid" data-group="jpVR"></div>
+      <h3 data-t="h3_jpOther">Other Works</h3><div class="grid" data-group="jpOther"></div>
     </div>
   </section>
 
   <section id="other" data-label="Other">
     <div class="reveal">
-      <h2>Other</h2><p class="lead">Work experience beyond art and code.</p>
-      <h3>eBay</h3><div class="grid" data-group="ebay"></div>
-      <h3>Retail</h3><div class="grid" data-group="retail"></div>
-      <h3>Warehouse</h3><div class="grid" data-group="warehouse"></div>
-      <h3>Drawing</h3><div class="grid" data-group="drawing"></div>
+      <h2 data-t="h_other">Other</h2><p class="lead" data-t="l_other">Work experience beyond art and code.</p>
+      <h3 data-t="h3_ebay">eBay</h3><div class="grid" data-group="ebay"></div>
+      <h3 data-t="h3_retail">Retail</h3><div class="grid" data-group="retail"></div>
+      <h3 data-t="h3_warehouse">Warehouse</h3><div class="grid" data-group="warehouse"></div>
+      <h3 data-t="h3_drawing">Drawing</h3><div class="grid" data-group="drawing"></div>
     </div>
   </section>
 
@@ -638,20 +745,20 @@ footer .social {
     <div class="reveal about">
       <div class="card portrait"><div class="slot" id="portrait" style="height:100%;aspect-ratio:auto"></div></div>
       <div>
-        <div class="eyebrow">About me</div>
-        <h2>Hi, I'm Tina Nguyen.</h2>
-        <p>I'm a 3D animator, 3D modeler, programmer and teacher. I make animated work, models and interactive experiences, from VR and game projects to creative coding for the web.</p>
-        <p>Replace this paragraph with your story: where you started, what you love making, and what you're looking for next.</p>
+        <div class="eyebrow" data-t="aboutEyebrow">About me</div>
+        <h2 data-t="aboutH">Hi, I'm Tina Nguyen.</h2>
+        <p data-t="aboutP1">I'm a 3D animator, 3D modeler, programmer and teacher. I make animated work, models and interactive experiences, from VR and game projects to creative coding for the web.</p>
+        <p data-t="aboutP2">Replace this paragraph with your story: where you started, what you love making, and what you're looking for next.</p>
         <div class="chips">
-          <span class="chip">3D Animation</span><span class="chip">3D Modeling</span><span class="chip">VFX</span><span class="chip">Lighting</span>
-          <span class="chip">Programming</span><span class="chip">Game Programming</span><span class="chip">Game Development</span><span class="chip">Music Videos</span>
+          <span class="chip" data-t="c_anim">3D Animation</span><span class="chip" data-t="c_model">3D Modeling</span><span class="chip" data-t="c_vfx">VFX</span><span class="chip" data-t="c_light">Lighting</span>
+          <span class="chip" data-t="c_prog">Programming</span><span class="chip" data-t="c_gprog">Game Programming</span><span class="chip" data-t="c_gamedev">Game Development</span><span class="chip" data-t="c_mv">Music Videos</span>
         </div>
       </div>
     </div>
   </section>
 
   <section id="certificates" data-label="Certificates">
-    <div class="reveal"><h2>Certificates</h2><p class="lead">Training and credentials.</p><div class="grid" data-group="certs"></div></div>
+    <div class="reveal"><h2 data-t="h_certificates">Certificates</h2><p class="lead" data-t="l_certificates">Training and credentials.</p><div class="grid" data-group="certs"></div></div>
   </section>
 </main>
 
@@ -702,7 +809,7 @@ socials(document.getElementById('socialTop'));
 socials(document.getElementById('socialBottom'));
 document.getElementById('yr').textContent = new Date().getFullYear();
 
-/* ---- build cards ---- */
+/* ---- cards (rebuilt whenever the language changes) ---- */
 function mediaTag(u){
   if(!u) return '';
   return /\.(mp4|webm|mov)(\?|$)/i.test(u)
@@ -710,20 +817,24 @@ function mediaTag(u){
     : `<img src="${esc(u)}" alt="" loading="lazy">`;
 }
 function esc(s){return s.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
-document.querySelectorAll('[data-group]').forEach(g=>{
-  g.innerHTML = (WORKS[g.dataset.group]||[]).map(({title:t,description:d,media:m})=>
-    `<article class="card"><div class="slot">${mediaTag(m)}</div><div class="body"><h4>${esc(t)}</h4><p>${esc(d)}</p></div></article>`).join('');
-});
+function renderCards(){
+  document.querySelectorAll('[data-group]').forEach(g=>{
+    g.innerHTML = (WORKS[g.dataset.group]||[]).map(w=>{
+      const t = (lang==='ja' && w.titleJa)       || w.title;
+      const d = (lang==='ja' && w.descriptionJa) || w.description;
+      return `<article class="card"><div class="slot">${mediaTag(w.media)}</div><div class="body"><h4>${esc(t)}</h4><p>${esc(d)}</p></div></article>`;
+    }).join('');
+  });
+}
 
 if(PORTRAIT) document.getElementById('portrait').innerHTML=mediaTag(PORTRAIT);
 
 /* ---- nav + dots ---- */
 const sections=[...document.querySelectorAll('main section')];
 const nav=document.getElementById('nav'), dots=document.getElementById('dots');
-const labels={home:'Home',animation:'3D Animations',modeling:'3D Modeling',software:'Software',japanese:'Japanese',other:'Other',about:'About',certificates:'Certificates'};
 sections.forEach(s=>{
-  const b=document.createElement('button'); b.textContent=labels[s.id]; b.dataset.go=s.id; nav.appendChild(b);
-  const d=document.createElement('i'); d.dataset.go=s.id; d.title=s.dataset.label; dots.appendChild(d);
+  const b=document.createElement('button'); b.dataset.go=s.id; nav.appendChild(b);
+  const d=document.createElement('i'); d.dataset.go=s.id; dots.appendChild(d);
 });
 document.addEventListener('click',e=>{
   const t=e.target.closest('[data-go]'); if(!t) return;
@@ -738,6 +849,39 @@ const io=new IntersectionObserver(es=>es.forEach(en=>{
 }),{threshold:.35});
 let current=0;
 sections.forEach(s=>io.observe(s));
+
+/* ---- language: EN / 日本語 ---- */
+let lang='en';
+function detectLang(){
+  if(DEFAULT_LANG==='en'||DEFAULT_LANG==='ja') return DEFAULT_LANG;
+  try{ const saved=localStorage.getItem('lang'); if(saved==='en'||saved==='ja') return saved; }catch(e){}
+  // 1) the browser's language list: the first Japanese-or-English entry wins
+  for(const l of (navigator.languages||[navigator.language||''])){
+    const c=String(l).toLowerCase();
+    if(c.startsWith('ja')) return 'ja';
+    if(c.startsWith('en')) return 'en';
+  }
+  // 2) otherwise the visitor's time zone
+  try{ if(Intl.DateTimeFormat().resolvedOptions().timeZone==='Asia/Tokyo') return 'ja'; }catch(e){}
+  return 'en';
+}
+function applyLang(l){
+  lang=l;
+  const T=TEXT[l], E=TEXT.en;
+  document.documentElement.lang=l;
+  document.querySelectorAll('[data-t]').forEach(el=>{ const v=T[el.dataset.t]; if(v!==undefined) el.textContent=v; });
+  nav.querySelectorAll('button').forEach(b=>{ b.textContent=T.nav[b.dataset.go]||E.nav[b.dataset.go]; });
+  dots.querySelectorAll('i').forEach(d=>{ d.title=T.nav[d.dataset.go]||E.nav[d.dataset.go]; });
+  document.querySelectorAll('#lang button').forEach(b=>b.classList.toggle('on',b.dataset.lang===l));
+  document.title = l==='ja' ? 'Tina Nguyen — ポートフォリオ' : 'Tina Nguyen — Portfolio';
+  renderCards();
+}
+document.getElementById('lang').addEventListener('click',e=>{
+  const b=e.target.closest('[data-lang]'); if(!b) return;
+  try{ localStorage.setItem('lang',b.dataset.lang); }catch(err){}
+  applyLang(b.dataset.lang);
+});
+applyLang(detectLang());
 
 /* ---------- WebGL background (video panels + hero model) ---------- */
 /* ---- video bridge ---- */
