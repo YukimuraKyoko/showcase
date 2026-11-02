@@ -915,6 +915,12 @@ function setCategoryVideo(cat,url){ if(url) videoURLs[cat]=url; else delete vide
 
   // Hero model: loads HERO_MODEL (a .glb), centers it, and scales it to HERO_SIZE.
   const heroModel=new THREE.Group(); hero.add(heroModel);
+
+  // Placeholder: a cube, shown until a model is set in HERO_MODEL (then it is removed).
+  // To use a different shape, change BoxGeometry to e.g. SphereGeometry / OctahedronGeometry.
+  const placeholderMat=new THREE.MeshStandardMaterial({color:0x9b6bff,metalness:.45,roughness:.28});
+  const placeholder=new THREE.Mesh(new THREE.BoxGeometry(HERO_SIZE*.6,HERO_SIZE*.6,HERO_SIZE*.6),placeholderMat);
+  heroModel.add(placeholder);
   if(HERO_MODEL && THREE.GLTFLoader){
     new THREE.GLTFLoader().load(HERO_MODEL,gltf=>{
       const m=gltf.scene;
@@ -922,6 +928,7 @@ function setCategoryVideo(cat,url){ if(url) videoURLs[cat]=url; else delete vide
       m.position.sub(c);                                   // center at origin
       const k=HERO_SIZE/Math.max(size.x,size.y,size.z);    // fit to HERO_SIZE
       heroModel.scale.setScalar(k);
+      heroModel.remove(placeholder);                       // model replaces the placeholder
       heroModel.add(m);
     },undefined,err=>console.warn('Could not load hero model:',HERO_MODEL,err));
   }
@@ -1007,6 +1014,7 @@ function setCategoryVideo(cat,url){ if(url) videoURLs[cat]=url; else delete vide
     hero.scale.setScalar((wide?1:.75)*(1-.55*mix));
 
     hue=(0.72+prog*1.0+themeShift/360)%1;
+    placeholderMat.color.setHSL(hue,.8,.6);              // cube follows the scroll color
     p1.color.setHSL((hue+.35)%1,.9,.6);
     p2.color.setHSL((hue+.65)%1,.9,.6);
     root.style.setProperty('--accent',`hsl(${Math.round(hue*360)},90%,70%)`);
