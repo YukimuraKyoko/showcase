@@ -41,103 +41,106 @@ const HERO_SPIN  = true;   // true = slowly rotates, false = stays facing front
 const HERO_WIREFRAME_SPHERE = true;   // the faint sphere around it (shown with the placeholder)
 
 /* 5) THE WORKS (the cards on each page).
-      Each work:  { title: '...', description: '...', media: '',
+      Each work:  { title: '...', company: '', year: '', description: '...', media: '',
                     titleJa: '日本語タイトル', descriptionJa: '日本語の説明' }
       (If a Japanese field is empty, the English text is shown.)
+      - company: company or project name, shown before the year ('' = hidden). Optional companyJa for Japanese.
+      - year: shown on the card and in the enlarged view ('' = hidden).
+      - launch: 'games' opens the games box (Girl Platformer / Flappy Circle) instead of the normal enlarged view.
       - media: a link to an image or video (.mp4/.webm/.mov = video). '' = empty box.
       - To add a work, copy a line. To remove one, delete its line. */
 const WORKS = {
   // ---------- 3D Animations ----------
   animation: [
-    { title: '2026 Demo Reel', description: 'Final Demo Reel after graduation from CG Spectrum', media: 'assets/videos/TinaNguyenDemoReel2026.mp4',
+    { title: '2026 Demo Reel', company: 'CG Spectrum', year: '2026', description: 'Final Demo Reel after graduation from CG Spectrum', media: 'assets/videos/TinaNguyenDemoReel2026.mp4',
       titleJa: 'キャラクターアニメーション', descriptionJa: 'ここに短い説明を入力してください。' },
-    { title: 'Digital Circus Short Demo', description: 'Environment, lighting, and animation were made by me, the 3D model/rigs are not made by me', media: 'assets/videos/TADC.mp4',
+    { title: 'Digital Circus Short Demo', company: 'Freelance', year: '2026', description: 'Environment, lighting, and animation were made by me, the 3D model/rigs are not made by me', media: 'assets/videos/TADC.mp4',
       titleJa: 'VRChatアバターのポーズ', descriptionJa: 'ここに短い説明を入力してください。' },
-    { title: 'Gloomy Flash WIP', description: 'Environment, lighting, VFX, and animation were made by me, 3D characters are no made by me. Also this is not the rendered version, its the pre-render.', media: 'assets/videos/GloomyFlashWIP.mp4',
+    { title: 'Gloomy Flash WIP', company: 'Freelance', year: '2025', description: 'Environment, lighting, VFX, and animation were made by me, 3D characters are no made by me. Also this is not the rendered version, its the pre-render.', media: 'assets/videos/GloomyFlashWIP.mp4',
       titleJa: 'ミュージックビデオ', descriptionJa: 'ここに短い説明を入力してください。' },
   ],
 
   // ---------- 3D Modeling ----------
   modeling: [
-    { title: 'Cyber City', description: 'Created a 3D Cyber City based on a references, 3D character designs not made by me', media: 'assets/videos/3DCyberCity.mp4',
+    { title: 'Cyber City', company: 'Freelance', year: '2024', description: 'Created a 3D Cyber City based on a references, 3D character designs not made by me', media: 'assets/videos/3DCyberCity.mp4',
       titleJa: 'キャラクター・アバター', descriptionJa: 'ここに短い説明を入力してください。' },
-    { title: 'Amazing Digital Circus Fan Project', description: '3D Modeled the environment (But not the characters), lighting, shadows and effects made by me', media: 'assets/videos/3DTADC.mp4',
+    { title: 'Amazing Digital Circus Fan Project', company: 'Freelance', year: '2026', description: '3D Modeled the environment (But not the characters), lighting, shadows and effects made by me', media: 'assets/videos/3DTADC.mp4',
       titleJa: '小道具', descriptionJa: 'ここに短い説明を入力してください。' },
-    { title: 'Environments', description: 'Add a short description.', media: '',
+    { title: 'VRChat World', company: 'Freelance', year: '2018', description: 'My first environment 3D model made by me, used for VRChat', media: 'assets/videos/VRCOldWorld.mp4',
       titleJa: '背景・環境', descriptionJa: 'ここに短い説明を入力してください。' },
   ],
 
   // ---------- Software Developer ----------
   software: [
-    { title: 'VR Developer', description: 'Add a short description.', media: '',
+    { title: 'VR Developer', company: 'Xperience', year: '2021', description: 'VR and UI Developer at Xperience for creating a business-oriented multiplayer VR Social media platform', media: 'assets/videos/VRDev.mp4',
       titleJa: 'VRデベロッパー', descriptionJa: 'ここに短い説明を入力してください。' },
-    { title: 'Unity Editor', description: 'Tools and scripts for the Unity Editor.', media: '',
+    { title: 'Unity Editor Developer', company: 'Projekt Melody', year: '2020', description: 'Worked in the 3D Vtuber scene back in 2020, created Unity UI Editor tools to assist with smooth animation transitions for vtuber streams at Projekt Melody', media: 'assets/videos/MelodyAnimationManager.mp4',
       titleJa: 'Unityエディタ', descriptionJa: 'Unityエディタ用のツールとスクリプト。' },
-    { title: 'Web p5 Projects', description: 'Creative coding sketches with p5.js.', media: '',
+    { title: 'Web p5 Projects', launch: 'games', company: 'MVCode', year: '2018-2020', description: '2 Projects I created after learning P5.Js from MVCode, learning how to create games using 2D pixel coordinates', media: '',
       titleJa: 'Web p5プロジェクト', descriptionJa: 'p5.jsによるクリエイティブコーディング。' },
-    { title: 'WebGL Projects', description: 'Real-time 3D in the browser.', media: '',
+    { title: 'WebGL Projects', company: 'Freelance', year: '', description: 'Real-time 3D in the browser.', media: '',
       titleJa: 'WebGLプロジェクト', descriptionJa: 'ブラウザで動くリアルタイム3D。' },
-    { title: 'Coding Instructor', description: 'Teaching programming.', media: '',
+    { title: 'Coding Instructor', company: '', year: '', description: 'Teaching programming.', media: '',
       titleJa: 'プログラミング講師', descriptionJa: 'プログラミングを教えています。' },
   ],
 
   // ---------- Japanese (main category) > VR Nihongo ----------
   jpVR: [
-    { title: 'VR Nihongo', description: 'Learn Japanese in VR.', media: '',
+    { title: 'VR Nihongo', company: '', year: '', description: 'Learn Japanese in VR.', media: '',
       titleJa: 'VR日本語', descriptionJa: 'VRで日本語を学ぶ。' },
-    { title: 'VR Nihongo Demo', description: 'Add a short description.', media: '',
+    { title: 'VR Nihongo Demo', company: '', year: '', description: 'Add a short description.', media: '',
       titleJa: 'VR日本語デモ', descriptionJa: 'ここに短い説明を入力してください。' },
   ],
 
   // ---------- Japanese (main category) > Other Works ----------
   jpOther: [
-    { title: 'Japanese Work 01', description: 'Add a short description.', media: '',
+    { title: 'Japanese Work 01', company: '', year: '', description: 'Add a short description.', media: '',
       titleJa: '日本語の作品 01', descriptionJa: 'ここに短い説明を入力してください。' },
-    { title: 'Japanese Work 02', description: 'Add a short description.', media: '',
+    { title: 'Japanese Work 02', company: '', year: '', description: 'Add a short description.', media: '',
       titleJa: '日本語の作品 02', descriptionJa: 'ここに短い説明を入力してください。' },
   ],
 
   // ---------- Other > eBay ----------
   ebay: [
-    { title: 'eBay', description: 'Add a short description.', media: '',
+    { title: 'eBay', company: '', year: '', description: 'Add a short description.', media: '',
       titleJa: 'eBay', descriptionJa: 'ここに短い説明を入力してください。' },
   ],
 
   // ---------- Other > Retail ----------
   retail: [
-    { title: 'CCSF Book Store', description: 'Add a short description.', media: '',
+    { title: 'CCSF Book Store', company: '', year: '', description: 'Add a short description.', media: '',
       titleJa: 'CCSFブックストア', descriptionJa: 'ここに短い説明を入力してください。' },
-    { title: 'Japantown Retail', description: 'Add a short description.', media: '',
+    { title: 'Japantown Retail', company: '', year: '', description: 'Add a short description.', media: '',
       titleJa: '日本町の小売店', descriptionJa: 'ここに短い説明を入力してください。' },
-    { title: 'Round 1', description: 'Add a short description.', media: '',
+    { title: 'Round 1', company: '', year: '', description: 'Add a short description.', media: '',
       titleJa: 'ラウンドワン', descriptionJa: 'ここに短い説明を入力してください。' },
   ],
 
   // ---------- Other > Warehouse ----------
   warehouse: [
-    { title: 'Truepill Warehouse', description: 'Add a short description.', media: '',
+    { title: 'Truepill Warehouse', company: '', year: '', description: 'Add a short description.', media: '',
       titleJa: 'Truepill倉庫', descriptionJa: 'ここに短い説明を入力してください。' },
-    { title: 'Amazon Warehouse', description: 'Add a short description.', media: '',
+    { title: 'Amazon Warehouse', company: '', year: '', description: 'Add a short description.', media: '',
       titleJa: 'Amazon倉庫', descriptionJa: 'ここに短い説明を入力してください。' },
   ],
 
   // ---------- Other > Drawing ----------
   drawing: [
-    { title: 'Drawing 01', description: 'Add a short description.', media: '',
+    { title: 'Drawing 01', company: '', year: '', description: 'Add a short description.', media: '',
       titleJa: 'ドローイング 01', descriptionJa: 'ここに短い説明を入力してください。' },
-    { title: 'Drawing 02', description: 'Add a short description.', media: '',
+    { title: 'Drawing 02', company: '', year: '', description: 'Add a short description.', media: '',
       titleJa: 'ドローイング 02', descriptionJa: 'ここに短い説明を入力してください。' },
-    { title: 'Drawing 03', description: 'Add a short description.', media: '',
+    { title: 'Drawing 03', company: '', year: '', description: 'Add a short description.', media: '',
       titleJa: 'ドローイング 03', descriptionJa: 'ここに短い説明を入力してください。' },
   ],
 
   // ---------- Certificates ----------
   certs: [
-    { title: 'SFSU Bachelors in Computer Science, Minors in Japanese', description: 'SFSU · 2019', media: 'assets/certificates/Degree.jpg',
+    { title: 'SFSU Bachelors in Computer Science, Minors in Japanese', company: '', year: '', description: 'SFSU · 2019', media: 'assets/certificates/Degree.jpg',
       titleJa: '資格・証明書 01', descriptionJa: '発行元・年' },
-    { title: '3D Animation Specialization', description: 'CG Spectrum · 2026', media: 'assets/certificates/cgspectrumCert.jpg',
+    { title: '3D Animation Specialization', company: '', year: '', description: 'CG Spectrum · 2026', media: 'assets/certificates/cgspectrumCert.jpg',
       titleJa: '資格・証明書 02', descriptionJa: '発行元・年' },
-    { title: 'TEFL Certificate', description: 'TEFL · 2026', media: 'assets/certificates/TEFL.png',
+    { title: 'TEFL Certificate', company: '', year: '', description: 'TEFL · 2026', media: 'assets/certificates/TEFL.png',
       titleJa: '資格・証明書 03', descriptionJa: '発行元・年' },
   ],
 
@@ -158,7 +161,7 @@ const TEXT = {
     c_anim:'3D Animation', c_model:'3D Modeling', c_vfxl:'VFX & Lighting', c_gamedev:'Game Development', c_vr:'VR', c_mv:'Music Videos',
     c_vfx:'VFX', c_light:'Lighting', c_prog:'Programming', c_gprog:'Game Programming',
     h_animation:'3D Animations', l_animation:'Character animation, VFX, lighting and music videos.',
-    h_modeling:'3D Modeling', l_modeling:'Characters, avatars, props and environments.',
+    h_modeling:'3D Modeling', l_modeling:'props, lighting, effects, and environments.',
     h_software:'Software Developer', l_software:'VR, game engines, creative coding and teaching.',
     h_japanese:'Japanese', l_japanese:'Japanese language projects and works.',
     h3_jpVR:'VR Nihongo', h3_jpOther:'Other Works', h3_drawing:'Drawing',
@@ -612,6 +615,102 @@ h3 {                                    /* sub-heading, e.g. "Retail", "Warehous
 
 .card { cursor: pointer; }
 
+.meta {                                 /* company name, then year */
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 6px;
+}
+.co {
+  font-size: .8rem;
+  font-weight: 600;
+  color: var(--text, inherit);
+}
+
+.year {                                 /* year tag after the company */
+  display: inline-block;
+  padding: 1px 10px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  font-size: .75rem;
+  letter-spacing: .04em;
+  color: var(--accent);
+}
+
+
+/* ---- launcher card hint ---- */
+.launch-hint {
+  position: absolute; inset: 0;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px;
+  color: var(--ink); font-size: .85rem; text-align: center;
+}
+.launch-hint span { font-size: 2rem; }
+
+/* ---- games box ---- */
+.gb-backdrop {
+  position: fixed; inset: 0; z-index: 9999;
+  display: flex; align-items: center; justify-content: center;
+  padding: 16px;
+  background: rgba(0, 0, 0, .65);
+  backdrop-filter: blur(4px);
+  opacity: 0; transition: opacity .3s ease;
+}
+.gb-backdrop.show { opacity: 1; }
+.gb {
+  width: min(960px, 94vw, calc(88vh * 1.6));        /* horizontal 16:10 box */
+  aspect-ratio: 16 / 10;
+  display: flex; flex-direction: column;
+  overflow: hidden;
+  border: 1px solid var(--accent);
+  border-radius: 18px;
+  background: hsl(250, 43%, 10%);
+  box-shadow: 0 30px 80px -20px var(--accent);
+  transition: transform .3s cubic-bezier(.2, .8, .2, 1);
+}
+.gb-head {
+  flex: none; height: 46px; padding: 0 12px;
+  display: flex; align-items: center; justify-content: space-between; gap: 10px;
+  border-bottom: 1px solid var(--line);
+  color: var(--ink);
+}
+.gb-title { flex: 1; text-align: center; font-size: 1rem; }
+.gb-back, .gb-x {
+  background: none; border: 1px solid var(--line); border-radius: 999px;
+  color: var(--ink); padding: 5px 14px; cursor: pointer; font-size: .85rem; min-width: 38px;
+}
+.gb-back:hover, .gb-x:hover { border-color: var(--accent); }
+.gb-back[hidden] { display: block; visibility: hidden; }        /* keeps the title centered */
+.gb-body { flex: 1; position: relative; min-height: 0; background: #000; }
+.gb-menu {
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center; gap: 28px; flex-wrap: wrap;
+  padding: 20px;
+  background: linear-gradient(165deg, #3b2a7a, #12162e 60%, #0b3a4a);
+}
+.gb-btn {
+  width: 220px; padding: 22px 14px;
+  display: flex; flex-direction: column; align-items: center; gap: 10px;
+  border: 1px solid var(--line); border-radius: 18px;
+  background: rgba(255, 255, 255, .08); color: var(--ink); cursor: pointer;
+  transition: .2s;
+}
+.gb-btn:hover { transform: translateY(-4px); border-color: var(--accent); box-shadow: 0 14px 34px -14px var(--accent); }
+.gb-btn .ic { width: 84px; height: 84px; border-radius: 22px; }
+.gb-btn .ic-circle { width: 38px; height: 38px; }
+.gb-name { font-weight: 700; font-size: 1.05rem; }
+.gb-hint { font-size: .78rem; color: var(--mute); }
+.gb-game { position: absolute; inset: 0; display: none; }
+.gb-game iframe { width: 100%; height: 100%; border: 0; display: block; background: #000; }
+
+.ic {
+  display: flex; align-items: center; justify-content: center; overflow: hidden;
+  width: 54px; height: 54px; border-radius: 16px;
+  box-shadow: 0 6px 14px rgba(0, 0, 0, .4);
+}
+.ic img { width: 120%; height: 120%; object-fit: cover; object-position: 50% 15%; margin-top: 8px; }
+.ic-circle { width: 26px; height: 26px; border-radius: 50%; background: #1a2cff; box-shadow: 0 0 0 3px rgba(255, 255, 255, .85), 0 0 12px rgba(120, 220, 255, .9); }
+
 /* ---- enlarged view (click a card) ---- */
 .lb-backdrop {
   position: fixed;
@@ -869,7 +968,9 @@ function renderCards(){
     g.innerHTML = (WORKS[g.dataset.group]||[]).map(w=>{
       const t = (lang==='ja' && w.titleJa)       || w.title;
       const d = (lang==='ja' && w.descriptionJa) || w.description;
-      return `<article class="card"><div class="slot">${mediaTag(w.media,true)}</div><div class="body"><h4>${esc(t)}</h4><p>${esc(d)}</p></div></article>`;
+      const co = (lang==='ja' && w.companyJa) || w.company;
+      const hint = (!w.media && w.launch) ? `<div class="launch-hint"><span>🎮</span><b>${lang==='ja'?'クリックしてゲームを選ぶ':'Click to play games (PC Only)'}</b></div>` : '';
+      return `<article class="card" data-launch="${esc(w.launch||'')}"><div class="slot">${mediaTag(w.media,true)}${hint}</div><div class="body"><h4>${esc(t)}</h4>${(w.company||w.year)?`<div class="meta">${co?`<span class="co">${esc(co)}</span>`:''}${w.year?`<span class="year">${esc(String(w.year))}</span>`:''}</div>`:''}<p>${esc(d)}</p></div></article>`;
     }).join('');
   });
 }
@@ -915,9 +1016,74 @@ function closeCard(){
   setTimeout(()=>{ backdrop.remove(); card.style.visibility=''; },300);
 }
 document.addEventListener('click',e=>{
-  const c=e.target.closest('.card'); if(c && !c.classList.contains('portrait') && c.querySelector('.body')) openCard(c);
+  const c=e.target.closest('.card'); if(c && !c.classList.contains('portrait') && c.querySelector('.body')){
+    if(c.dataset.launch==='games') openGames(c); else openCard(c);
+  }
 });
-document.addEventListener('keydown',e=>{ if(e.key==='Escape') closeCard(); });
+document.addEventListener('keydown',e=>{ if(e.key==='Escape'){ closeCard(); closeGames(); } });
+
+/* ---- games box: opens from "Web p5 Projects" (pick a game, it runs inside the box) ---- */
+const GAMES=[
+  { id:'platformer', name:'Girl Platformer', nameJa:'ガールプラットフォーマー', src:'assets/p5/platformer/index.html',
+    hint:'Arrows/WASD move · Space jump · Z run', hintJa:'矢印/WASD 移動 · Space ジャンプ · Z ダッシュ',
+    icon:'<span class="ic" style="background:linear-gradient(160deg,#ffb3d9,#8d6bff)"><img src="assets/p5/platformer/Idle_(1).png" alt=""></span>' },
+  { id:'flappy', name:'Flappy Circle', nameJa:'フラッピーサークル', src:'assets/p5/flappycircle/index.html',
+    hint:'Hold the mouse button to rise', hintJa:'マウスを押し続けて上昇',
+    icon:'<span class="ic" style="background:linear-gradient(160deg,#4ea8ff,#2b2f8f)"><i class="ic-circle"></i></span>' }
+];
+let gb=null;
+function openGames(card){
+  if(gb||lbOpen) return;
+  const ja=lang==='ja';
+  const bd=document.createElement('div'); bd.className='gb-backdrop';
+  bd.innerHTML=`
+    <div class="gb">
+      <div class="gb-head">
+        <button class="gb-back" aria-label="Back" hidden>◀ ${ja?'戻る':'Back'}</button>
+        <b class="gb-title">${ja?'Web p5プロジェクト':'Web p5 Projects'}</b>
+        <button class="gb-x" aria-label="Close">✕</button>
+      </div>
+      <div class="gb-body">
+        <div class="gb-menu">${GAMES.map(g=>`<button class="gb-btn" data-game="${g.id}">${g.icon}<span class="gb-name">${esc((ja&&g.nameJa)||g.name)}</span><span class="gb-hint">${esc((ja&&g.hintJa)||g.hint)}</span></button>`).join('')}</div>
+        <div class="gb-game"></div>
+      </div>
+    </div>`;
+  document.body.appendChild(bd);
+  const box=bd.querySelector('.gb'), menu=bd.querySelector('.gb-menu'), gameBox=bd.querySelector('.gb-game'), back=bd.querySelector('.gb-back');
+  gb={bd,box,card,gameBox,menu,back,playing:false};
+  menu.addEventListener('click',e=>{
+    const b=e.target.closest('[data-game]'); if(!b) return;
+    const g=GAMES.find(x=>x.id===b.dataset.game);
+    gb.playing=true; menu.style.display='none'; back.hidden=false; gameBox.style.display='block';
+    gameBox.innerHTML='<iframe title="'+esc(g.name)+'" allow="autoplay; fullscreen"></iframe>';
+    const f=gameBox.querySelector('iframe');
+    f.addEventListener('load',()=>{ try{ f.contentWindow.focus(); }catch(err){} });
+    f.src=g.src;
+  });
+  back.addEventListener('click',gamesToMenu);
+  bd.querySelector('.gb-x').addEventListener('click',closeGames);
+  bd.addEventListener('click',e=>{ if(e.target===bd) closeGames(); });
+  // grow out of the card
+  gb.flip=()=>{
+    const a=card.getBoundingClientRect(), b=box.getBoundingClientRect();
+    return `translate(${a.left+a.width/2-(b.left+b.width/2)}px,${a.top+a.height/2-(b.top+b.height/2)}px) scale(${Math.min(a.width/b.width,a.height/b.height)})`;
+  };
+  box.style.transition='none'; box.style.transform=gb.flip(); box.offsetWidth;
+  box.style.transition=''; box.style.transform=''; bd.classList.add('show');
+}
+window.addEventListener('message',e=>{ if(e.data==='close-games') closeGames(); });   // Esc pressed inside a game
+function gamesToMenu(){
+  if(!gb||!gb.playing) return;
+  gb.playing=false; gb.gameBox.innerHTML=''; gb.gameBox.style.display='none';   // removing the iframe stops the game
+  gb.menu.style.display=''; gb.back.hidden=true;
+}
+function closeGames(){
+  if(!gb) return;
+  const g=gb; gb=null;
+  g.gameBox.innerHTML='';
+  g.box.style.transform=g.flip(); g.bd.classList.remove('show');
+  setTimeout(()=>g.bd.remove(),300);
+}
 
 if(PORTRAIT) document.getElementById('portrait').innerHTML=mediaTag(PORTRAIT);
 

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+<title>Girl Platformer</title>
+<style>
+  html, body { margin:0; height:100%; background:#000; overflow:hidden; }
+  main { position:fixed; inset:0; display:flex; align-items:center; justify-content:center; }
+  canvas { width:100% !important; height:100% !important; object-fit:contain; display:block; }
+  /* touch controls (shown on touch screens only) */
+  .pad { display:none; position:fixed; left:0; right:0; bottom:10px; padding:0 12px; justify-content:space-between; pointer-events:none; }
+  @media (pointer:coarse) { .pad { display:flex; } }
+  .pad div { display:flex; gap:10px; pointer-events:auto; }
+  .pad button { width:58px; height:58px; border-radius:50%; border:2px solid rgba(255,255,255,.6);
+    background:rgba(255,255,255,.18); color:#fff; font:700 15px system-ui; touch-action:none; user-select:none; -webkit-user-select:none; }
+</style>
+<script src="../p5.min.js"></script>
+<script>
+/* p5 1.1.9 loads images with fetch(), which browsers refuse for local files (file://) - that gave a black screen.
+   This plain <img>-based loadImage works both from a folder and from a web server. */
+p5.prototype.loadImage=function(path,success,failure){
+  var pImg=new p5.Image(1,1,this), img=new Image();
+  img.onload=function(){
+    pImg.width=pImg.canvas.width=img.naturalWidth; pImg.height=pImg.canvas.height=img.naturalHeight;
+    pImg.drawingContext.drawImage(img,0,0); pImg.modified=true;
+    if(typeof success==='function') success(pImg);
+  };
+  img.onerror=function(e){ if(typeof failure==='function') failure(e); else console.error('Could not load image: '+path); };
+  img.src=path;
+  return pImg;
+};
+</script>
+<script src="platformer.js"></script>
+</head>
+<body>
+<main></main>
+<div class="pad">
+  <div><button data-k="left">◀</button><button data-k="right">▶</button></div>
+  <div><button data-k="run">RUN</button><button data-k="jump">JUMP</button></div>
+</div>
+<script>
+/* on-screen buttons -> the sketch's own key variables */
+(function(){
+  function set(k, on){
+    if (k==='left')  { left=on;  if(on){dirL=true; dirR=false;} }
+    if (k==='right') { right=on; if(on){dirR=true; dirL=false;} }
+    if (k==='run')   { running=on; }
+    if (k==='jump')  { jumpu = on && canJump; }
+  }
+  document.querySelectorAll('.pad button').forEach(function(b){
+    var k=b.dataset.k;
+    ['pointerdown'].forEach(function(t){ b.addEventListener(t,function(e){ e.preventDefault(); b.setPointerCapture(e.pointerId); set(k,true); }); });
+    ['pointerup','pointercancel'].forEach(function(t){ b.addEventListener(t,function(e){ set(k,false); }); });
+  });
+  window.addEventListener('keydown',function(e){ if(e.keyCode===32||(e.keyCode>=37&&e.keyCode<=40)) e.preventDefault(); });
+})();
+</script>
+<script>window.addEventListener('keydown',function(e){ if(e.key==='Escape') parent.postMessage('close-games','*'); });</script>
+</body>
+</html>

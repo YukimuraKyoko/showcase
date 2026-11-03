@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+<title>Flappy Circle</title>
+<style>
+  html, body { margin:0; height:100%; background:#000; overflow:hidden; touch-action:none; }
+  main { position:fixed; inset:0; display:flex; align-items:center; justify-content:center; }
+  canvas { width:100% !important; height:100% !important; object-fit:contain; display:block; }
+</style>
+<script src="../p5.min.js"></script>
+<script>
+/* p5 1.1.9 loads images with fetch(), which browsers refuse for local files (file://) - that gave a black screen.
+   This plain <img>-based loadImage works both from a folder and from a web server. */
+p5.prototype.loadImage=function(path,success,failure){
+  var pImg=new p5.Image(1,1,this), img=new Image();
+  img.onload=function(){
+    pImg.width=pImg.canvas.width=img.naturalWidth; pImg.height=pImg.canvas.height=img.naturalHeight;
+    pImg.drawingContext.drawImage(img,0,0); pImg.modified=true;
+    if(typeof success==='function') success(pImg);
+  };
+  img.onerror=function(e){ if(typeof failure==='function') failure(e); else console.error('Could not load image: '+path); };
+  img.src=path;
+  return pImg;
+};
+</script>
+<script src="flappycircle.js"></script>
+</head>
+<body>
+<main></main>
+<script>window.addEventListener('keydown',function(e){ if(e.key==='Escape') parent.postMessage('close-games','*'); });</script>
+</body>
+</html>
