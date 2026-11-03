@@ -46,7 +46,7 @@ const HERO_WIREFRAME_SPHERE = true;   // the faint sphere around it (shown with 
       (If a Japanese field is empty, the English text is shown.)
       - company: company or project name, shown before the year ('' = hidden). Optional companyJa for Japanese.
       - year: shown on the card and in the enlarged view ('' = hidden).
-      - launch: 'games' opens the games box (Girl Platformer / Flappy Circle) instead of the normal enlarged view.
+      - launch: 'games' opens the p5 games box (Girl Platformer / Flappy Circle); 'webgl' opens the WebGL box (Epic Roll a Ball / Shadersphere). Both replace the normal enlarged view.
       - media: a link to an image or video (.mp4/.webm/.mov = video). '' = empty box.
       - To add a work, copy a line. To remove one, delete its line. */
 const WORKS = {
@@ -78,17 +78,17 @@ const WORKS = {
       titleJa: 'Unityエディタ', descriptionJa: 'Unityエディタ用のツールとスクリプト。' },
     { title: 'Web p5 Projects', launch: 'games', company: 'MVCode', year: '2018-2020', description: '2 Projects I created after learning P5.Js from MVCode, learning how to create games using 2D pixel coordinates', media: '',
       titleJa: 'Web p5プロジェクト', descriptionJa: 'p5.jsによるクリエイティブコーディング。' },
-    { title: 'WebGL Projects', company: 'Freelance', year: '', description: 'Real-time 3D in the browser.', media: '',
-      titleJa: 'WebGLプロジェクト', descriptionJa: 'ブラウザで動くリアルタイム3D。' },
-    { title: 'Coding Instructor', company: '', year: '', description: 'Teaching programming.', media: '',
+    { title: 'WebGL Projects', launch: 'webgl', company: 'Unity', year: '2018-2019', description: 'Unity3D projects built for the browser with WebGL: Epic Roll a Ball (post-processing, lighting, my own Blender models) and Shadersphere (HLSL shaders)', media: '',
+      titleJa: 'WebGLプロジェクト', descriptionJa: 'WebGLでブラウザ上で動くUnity3Dプロジェクト。' },
+    { title: 'Coding Instructor', company: 'MVCode/TheCoderSchool', year: '2018-2026', description: 'Teaching programming to kids ages 6-17, Started with MVCode in 2018, taught small groups of kids, created lessons plans and curriculums, taught them Javascript(P5), and Unity3D with C# scripting. Then in 2024 I got hired to TheCoderSchool where we do 1-to-1 private tutoring on a weekly basis and did summer camps with classes of 10-30 kids; teaching 3D modeling (blender), Unity3D, and Python.', media: 'assets/videos/codinginstructor.mp4',
       titleJa: 'プログラミング講師', descriptionJa: 'プログラミングを教えています。' },
   ],
 
   // ---------- Japanese (main category) > VR Nihongo ----------
   jpVR: [
-    { title: 'VR Nihongo', company: '', year: '', description: 'Learn Japanese in VR.', media: '',
+    { title: 'Community Manager / World Designer', company: 'VR Nihongo', year: '2019', description: 'As a community manager I helped "moe-sensei" a Japanese teacher from Australia to become a VR youtuber and created the first Japanese-learning community with her on "VRChat"(an online social game). I designed the Japanese learning worlds in Unity/Blender and maintained a discord server of about 1.6k members with a patreon system.', media: 'assets/videos/vrnihongo.mp4',
       titleJa: 'VR日本語', descriptionJa: 'VRで日本語を学ぶ。' },
-    { title: 'VR Nihongo Demo', company: '', year: '', description: 'Add a short description.', media: '',
+    { title: 'EN-JP Language Exchange Experience', company: 'VRChat', year: '2025-2027', description: 'Participated in weekly (or daily) online language exchange meetings, speaking Japanese on a regular basis, as well as reading Japanese.', media: 'assets/videos/languageexchange.mp4',
       titleJa: 'VR日本語デモ', descriptionJa: 'ここに短い説明を入力してください。' },
   ],
 
@@ -164,8 +164,8 @@ const TEXT = {
     h_modeling:'3D Modeling', l_modeling:'props, lighting, effects, and environments.',
     h_software:'Software Developer', l_software:'VR, game engines, creative coding and teaching.',
     h_japanese:'Japanese', l_japanese:'Japanese language projects and works.',
-    h3_jpVR:'VR Nihongo', h3_jpOther:'Other Works', h3_drawing:'Drawing',
-    h_other:'Other', l_other:'Work experience beyond art and code.',
+    h3_jpVR:'VR', h3_jpOther:'Other Works', h3_drawing:'Drawing',
+    h_other:'Other', l_other:'Work experience besides art and code.',
     h3_ebay:'eBay', h3_retail:'Retail', h3_warehouse:'Warehouse',
     aboutEyebrow:'About me', aboutH:"Hi, I'm Tina Nguyen.",
     aboutP1:"I'm a 3D animator, 3D modeler, programmer and teacher. I make animated work, models and interactive experiences, from VR and game projects to creative coding for the web.",
@@ -709,6 +709,8 @@ h3 {                                    /* sub-heading, e.g. "Retail", "Warehous
   box-shadow: 0 6px 14px rgba(0, 0, 0, .4);
 }
 .ic img { width: 120%; height: 120%; object-fit: cover; object-position: 50% 15%; margin-top: 8px; }
+.ic-ball { width: 38px; height: 38px; border-radius: 50%; background: radial-gradient(circle at 32% 30%, #fff, #ffb347 45%, #c2410c); box-shadow: 0 4px 10px rgba(0,0,0,.45); }
+.ic-ball-glow { background: radial-gradient(circle at 32% 30%, #fff, #8be9ff 45%, #6a2bff); box-shadow: 0 0 14px rgba(140,230,255,.9); }
 .ic-circle { width: 26px; height: 26px; border-radius: 50%; background: #1a2cff; box-shadow: 0 0 0 3px rgba(255, 255, 255, .85), 0 0 12px rgba(120, 220, 255, .9); }
 
 /* ---- enlarged view (click a card) ---- */
@@ -1017,34 +1019,44 @@ function closeCard(){
 }
 document.addEventListener('click',e=>{
   const c=e.target.closest('.card'); if(c && !c.classList.contains('portrait') && c.querySelector('.body')){
-    if(c.dataset.launch==='games') openGames(c); else openCard(c);
+    if(c.dataset.launch==='games'||c.dataset.launch==='webgl') openGames(c,c.dataset.launch); else openCard(c);
   }
 });
 document.addEventListener('keydown',e=>{ if(e.key==='Escape'){ closeCard(); closeGames(); } });
 
 /* ---- games box: opens from "Web p5 Projects" (pick a game, it runs inside the box) ---- */
 const GAMES=[
-  { id:'platformer', name:'Girl Platformer', nameJa:'ガールプラットフォーマー', src:'assets/p5/platformer/index.html',
+  { id:'platformer', name:'Girl Platformer Demo', nameJa:'ガールプラットフォーマー', src:'assets/p5/platformer/index.html',
     hint:'Arrows/WASD move · Space jump · Z run', hintJa:'矢印/WASD 移動 · Space ジャンプ · Z ダッシュ',
     icon:'<span class="ic" style="background:linear-gradient(160deg,#ffb3d9,#8d6bff)"><img src="assets/p5/platformer/Idle_(1).png" alt=""></span>' },
-  { id:'flappy', name:'Flappy Circle', nameJa:'フラッピーサークル', src:'assets/p5/flappycircle/index.html',
+  { id:'flappy', name:'Flappy Circle Demo', nameJa:'フラッピーサークル', src:'assets/p5/flappycircle/index.html',
     hint:'Hold the mouse button to rise', hintJa:'マウスを押し続けて上昇',
     icon:'<span class="ic" style="background:linear-gradient(160deg,#4ea8ff,#2b2f8f)"><i class="ic-circle"></i></span>' }
 ];
+const WEBGL_GAMES=[
+  { id:'epic', name:'Epic Roll a Ball, 2018', nameJa:'エピック・ロールアボール', src:'assets/webgl/epic/index.html',
+    hint:'Arrows/WASD to roll · loads ~48 MB', hintJa:'矢印/WASDで転がす · 約48MB',
+    icon:'<span class="ic" style="background:linear-gradient(160deg,#ffd36b,#e8571f)"><i class="ic-ball"></i></span>' },
+  { id:'shadersphere', name:'Unity3D HLSL - Shadersphere, 2019', nameJa:'HLSLシェーダー - Shadersphere', src:'assets/webgl/shadersphere/index.html',
+    hint:'HLSL shader demo · loads ~50 MB', hintJa:'HLSLシェーダーのデモ · 約50MB',
+    icon:'<span class="ic" style="background:linear-gradient(160deg,#7af0ff,#5b2bd6)"><i class="ic-ball ic-ball-glow"></i></span>' }
+];
 let gb=null;
-function openGames(card){
+function openGames(card,kind){
   if(gb||lbOpen) return;
   const ja=lang==='ja';
+  const list=kind==='webgl'?WEBGL_GAMES:GAMES;
+  const title=kind==='webgl'?(ja?'WebGLプロジェクト':'WebGL Projects'):(ja?'Web p5プロジェクト':'Web p5 Projects');
   const bd=document.createElement('div'); bd.className='gb-backdrop';
   bd.innerHTML=`
     <div class="gb">
       <div class="gb-head">
         <button class="gb-back" aria-label="Back" hidden>◀ ${ja?'戻る':'Back'}</button>
-        <b class="gb-title">${ja?'Web p5プロジェクト':'Web p5 Projects'}</b>
+        <b class="gb-title">${title}</b>
         <button class="gb-x" aria-label="Close">✕</button>
       </div>
       <div class="gb-body">
-        <div class="gb-menu">${GAMES.map(g=>`<button class="gb-btn" data-game="${g.id}">${g.icon}<span class="gb-name">${esc((ja&&g.nameJa)||g.name)}</span><span class="gb-hint">${esc((ja&&g.hintJa)||g.hint)}</span></button>`).join('')}</div>
+        <div class="gb-menu">${list.map(g=>`<button class="gb-btn" data-game="${g.id}">${g.icon}<span class="gb-name">${esc((ja&&g.nameJa)||g.name)}</span><span class="gb-hint">${esc((ja&&g.hintJa)||g.hint)}</span></button>`).join('')}</div>
         <div class="gb-game"></div>
       </div>
     </div>`;
@@ -1053,7 +1065,7 @@ function openGames(card){
   gb={bd,box,card,gameBox,menu,back,playing:false};
   menu.addEventListener('click',e=>{
     const b=e.target.closest('[data-game]'); if(!b) return;
-    const g=GAMES.find(x=>x.id===b.dataset.game);
+    const g=list.find(x=>x.id===b.dataset.game);
     gb.playing=true; menu.style.display='none'; back.hidden=false; gameBox.style.display='block';
     gameBox.innerHTML='<iframe title="'+esc(g.name)+'" allow="autoplay; fullscreen"></iframe>';
     const f=gameBox.querySelector('iframe');
