@@ -49,7 +49,7 @@ const HERO_WIREFRAME_SPHERE = true;   // the faint sphere around it (shown with 
 const WORKS = {
   // ---------- 3D Animations ----------
   animation: [
-    { title: 'Character Animation', description: 'Add a short description.', media: '',
+    { title: '2026 Demo Reel', description: 'Final Demo Reel after graduation from CG Spectrum', media: 'assets/videos/TinaNguyenDemoReel2026.mp4',
       titleJa: 'キャラクターアニメーション', descriptionJa: 'ここに短い説明を入力してください。' },
     { title: 'VFX & Lighting', description: 'Add a short description.', media: '',
       titleJa: 'VFX・ライティング', descriptionJa: 'ここに短い説明を入力してください。' },
@@ -605,6 +605,53 @@ h3 {                                    /* sub-heading, e.g. "Retail", "Warehous
 .card p {
   font-size: .88rem;
   color: var(--mute);
+  display: -webkit-box;                 /* only the first few lines on the card */
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.card { cursor: pointer; }
+
+/* ---- enlarged view (click a card) ---- */
+.lb-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: rgba(0, 0, 0, .65);
+  backdrop-filter: blur(4px);
+  opacity: 0;
+  transition: opacity .3s ease;
+}
+.lb-backdrop.show { opacity: 1; }
+
+.lb-card {
+  width: min(900px, 100%);
+  max-height: 90vh;
+  overflow-y: auto;
+  border: 1px solid var(--accent);
+  border-radius: 18px;
+  background: hsl(250, 43%, 10%);
+  box-shadow: 0 30px 80px -20px var(--accent);
+  transform-origin: top left;
+  transition: transform .3s cubic-bezier(.2, .8, .2, 1);
+}
+.lb-card .slot { aspect-ratio: 16 / 9; background: #000; }
+.lb-card .slot video,
+.lb-card .slot img { object-fit: contain; }
+.lb-card .body { padding: 18px 22px 24px; }
+.lb-card h4 { font-size: 1.3rem; margin-bottom: 8px; }
+.lb-card p {
+  display: block;
+  overflow: visible;
+  font-size: 1rem;
+  line-height: 1.6;
+  white-space: pre-line;
 }
 
 
@@ -810,10 +857,12 @@ socials(document.getElementById('socialBottom'));
 document.getElementById('yr').textContent = new Date().getFullYear();
 
 /* ---- cards (rebuilt whenever the language changes) ---- */
-function mediaTag(u){
+function mediaTag(u,preview){
   if(!u) return '';
   return /\.(mp4|webm|mov)(\?|$)/i.test(u)
-    ? `<video src="${esc(u)}" muted loop autoplay playsinline></video>`
+    ? (preview
+        ? `<video src="${esc(u)}" data-preview muted autoplay playsinline preload="metadata"></video>`
+        : `<video src="${esc(u)}" muted loop autoplay playsinline></video>`)
     : `<img src="${esc(u)}" alt="" loading="lazy">`;
 }
 function esc(s){return s.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
@@ -822,10 +871,55 @@ function renderCards(){
     g.innerHTML = (WORKS[g.dataset.group]||[]).map(w=>{
       const t = (lang==='ja' && w.titleJa)       || w.title;
       const d = (lang==='ja' && w.descriptionJa) || w.description;
-      return `<article class="card"><div class="slot">${mediaTag(w.media)}</div><div class="body"><h4>${esc(t)}</h4><p>${esc(d)}</p></div></article>`;
+      return `<article class="card"><div class="slot">${mediaTag(w.media,true)}</div><div class="body"><h4>${esc(t)}</h4><p>${esc(d)}</p></div></article>`;
     }).join('');
   });
 }
+
+/* ---- card video = 5 second looping preview ---- */
+const PREVIEW_SECONDS=5;
+document.addEventListener('timeupdate',e=>{
+  const v=e.target;
+  if(v.tagName==='VIDEO' && v.hasAttribute('data-preview') && v.currentTime>=PREVIEW_SECONDS){
+    v.currentTime=0; v.play().catch(()=>{});
+  }
+},true);
+
+/* ---- click a card: enlarge it (not full screen); click outside to return ---- */
+let lbOpen=null;
+function openCard(card){
+  if(lbOpen) return;
+  const backdrop=document.createElement('div'); backdrop.className='lb-backdrop';
+  const box=document.createElement('article'); box.className='lb-card';
+  box.innerHTML=card.innerHTML;
+  const v=box.querySelector('video');
+  if(v){                                  // full video with controls
+    v.removeAttribute('data-preview'); v.loop=true; v.muted=false; v.controls=true;
+    v.currentTime=0; v.play().catch(()=>{ v.muted=true; v.play().catch(()=>{}); });
+  }
+  backdrop.appendChild(box); document.body.appendChild(backdrop);
+  const flip=()=>{                        // transform that makes the box look like the card
+    const a=card.getBoundingClientRect(), b=box.getBoundingClientRect();
+    return `translate(${a.left-b.left}px,${a.top-b.top}px) scale(${a.width/b.width},${a.height/b.height})`;
+  };
+  box.style.transition='none'; box.style.transform=flip();
+  box.offsetWidth;
+  box.style.transition=''; backdrop.classList.add('show'); box.style.transform='';
+  card.style.visibility='hidden';
+  lbOpen={card,backdrop,box,flip};
+  backdrop.addEventListener('click',e=>{ if(e.target===backdrop) closeCard(); });
+}
+function closeCard(){
+  if(!lbOpen) return;
+  const {card,backdrop,box,flip}=lbOpen; lbOpen=null;
+  const v=box.querySelector('video'); if(v) v.pause();
+  box.style.transform=flip(); backdrop.classList.remove('show');
+  setTimeout(()=>{ backdrop.remove(); card.style.visibility=''; },300);
+}
+document.addEventListener('click',e=>{
+  const c=e.target.closest('.card'); if(c && !c.classList.contains('portrait') && c.querySelector('.body')) openCard(c);
+});
+document.addEventListener('keydown',e=>{ if(e.key==='Escape') closeCard(); });
 
 if(PORTRAIT) document.getElementById('portrait').innerHTML=mediaTag(PORTRAIT);
 
