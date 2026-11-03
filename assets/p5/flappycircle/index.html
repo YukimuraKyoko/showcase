@@ -6,29 +6,53 @@
 <title>Flappy Circle</title>
 <style>
   html, body { margin:0; height:100%; background:#000; overflow:hidden; touch-action:none; }
-  main { position:fixed; inset:0; display:flex; align-items:center; justify-content:center; }
+  #ld { position:fixed; inset:0; display:flex; align-items:center; justify-content:center; color:#fff; font:600 18px system-ui,sans-serif; z-index:0; }
+  main { z-index:1; position:fixed; inset:0; display:flex; align-items:center; justify-content:center; }
   canvas { width:100% !important; height:100% !important; object-fit:contain; display:block; }
 </style>
+
+</head>
+<body>
+<div id="ld">Loading…</div>
+<main></main>
 <script src="../p5.min.js"></script>
 <script>
 /* p5 1.1.9 loads images with fetch(), which browsers refuse for local files (file://) - that gave a black screen.
-   This plain <img>-based loadImage works both from a folder and from a web server. */
+   This plain <img>-based loadImage works both from a folder and from a web server.
+   Images start downloading only after the page's load event (otherwise p5 waits for all of them before starting), and
+   the game itself waits until every image has arrived, showing "Loading..." meanwhile. */
+var pending=[], inflight=0, loadFired=(document.readyState==='complete');
+window.__ready=false;
+function checkReady(){
+  if(!window.__ready && loadFired && inflight===0){
+    window.__ready=true;
+    var ld=document.getElementById('ld'); if(ld) ld.style.display='none';
+  }
+}
+window.addEventListener('load',function(){ loadFired=true; pending.forEach(function(g){ g(); }); pending=[]; checkReady(); });
 p5.prototype.loadImage=function(path,success,failure){
   var pImg=new p5.Image(1,1,this), img=new Image();
+  inflight++;
   img.onload=function(){
     pImg.width=pImg.canvas.width=img.naturalWidth; pImg.height=pImg.canvas.height=img.naturalHeight;
     pImg.drawingContext.drawImage(img,0,0); pImg.modified=true;
     if(typeof success==='function') success(pImg);
+    inflight--; checkReady();
   };
-  img.onerror=function(e){ if(typeof failure==='function') failure(e); else console.error('Could not load image: '+path); };
-  img.src=path;
+  img.onerror=function(e){ if(typeof failure==='function') failure(e); else console.error('Could not load image: '+path); inflight--; checkReady(); };
+  var go=function(){ img.src=path; };
+  if(loadFired) go(); else pending.push(go);
   return pImg;
 };
 </script>
 <script src="flappycircle.js"></script>
-</head>
-<body>
-<main></main>
+<script>
+/* hold the game until its images are ready */
+(function(){
+  var d=window.draw; window.draw=function(){ if(window.__ready) d(); };
+  var c=window.createSmoke; window.createSmoke=function(){ if(window.__ready) c(); };
+})();
+</script>
 <script>window.addEventListener('keydown',function(e){ if(e.key==='Escape') parent.postMessage('close-games','*'); });</script>
 </body>
 </html>
