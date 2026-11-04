@@ -102,7 +102,7 @@ const WORKS = {
 
   // ---------- Other > eBay ----------
   ebay: [
-    { title: 'eBay seller', company: 'eBay', year: '2010-Present', description: 'Selling items, customer service, handling returns, handling stock, and market watching. With 1.4k positive feedbacks and 2.4k items sold as of 2026', media: 'assets/videos/eBay.mp4',
+    { title: 'eBay seller', company: 'eBay', year: '2010-Present', description: 'Selling items, customer service, handling returns, handling stock, and market watching. With 1.4k positive feedbacks and 2.4k items sold as of 2026', media: 'assets/videos/ebay.mp4',
       titleJa: 'eBay', descriptionJa: 'ここに短い説明を入力してください。' },
   ],
 
@@ -588,6 +588,19 @@ h3 {                                    /* sub-heading, e.g. "Retail", "Warehous
               rgba(255, 255, 255, .06) 12px 24px);   /* striped when empty */
 }
 
+.slot .loading {                        /* shown until the thumbnail has arrived */
+  position: absolute; inset: 0; z-index: 2; display: flex; align-items: center; justify-content: center; gap: 8px;
+  color: #fff; font: 600 .85rem system-ui, sans-serif; letter-spacing: .02em;
+  background: rgba(10, 8, 28, .45); pointer-events: none;
+}
+.slot .loading::before {
+  content: ''; width: 16px; height: 16px; border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, .35); border-top-color: #fff; animation: slot-spin .8s linear infinite;
+}
+.slot .loading.err::before { display: none; }
+@keyframes slot-spin { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) { .slot .loading::before { animation: none; } }
+
 .slot img,
 .slot video {
   position: absolute;
@@ -959,13 +972,40 @@ socials(document.getElementById('socialBottom'));
 document.getElementById('yr').textContent = new Date().getFullYear();
 
 /* ---- cards (rebuilt whenever the language changes) ---- */
+/* Cards show small thumbnails (assets/thumbs/<name>.jpg / .mp4, a 5 s clip); the full file loads only when a card is opened. */
+function thumbOf(u){ return 'assets/thumbs/'+u.split('/').pop().replace(/\.[^.]+$/,'').toLowerCase(); }
+function loadingTag(){ return `<div class="loading">${lang==='ja'?'読み込み中…':'Loading…'}</div>`; }
 function mediaTag(u,preview){
   if(!u) return '';
-  return /\.(mp4|webm|mov)(\?|$)/i.test(u)
-    ? (preview
-        ? `<video src="${esc(u)}" data-preview muted autoplay playsinline preload="metadata"></video>`
-        : `<video src="${esc(u)}" muted loop autoplay playsinline></video>`)
+  const isVid=/\.(mp4|webm|mov)(\?|$)/i.test(u);
+  if(!preview) return isVid
+    ? `<video src="${esc(u)}" muted loop autoplay playsinline></video>`
     : `<img src="${esc(u)}" alt="" loading="lazy">`;
+  const th=thumbOf(u);
+  return loadingTag() + (isVid
+    ? `<video data-preview data-full="${esc(u)}" data-src="${th}.mp4" poster="${th}.jpg" muted loop playsinline preload="none"></video>`
+    : `<img data-full="${esc(u)}" src="${th}.jpg" alt="" loading="lazy" decoding="async">`);
+}
+/* hide the "Loading…" label once the picture / first video frame is there (or say so if it failed) */
+function slotLoaded(e){
+  const el=e.target; if(!el||!el.closest) return;
+  const slot=el.closest('.slot'); if(!slot) return;
+  const l=slot.querySelector('.loading'); if(!l) return;
+  if(e.type==='error'){ if(el.tagName==='VIDEO'&&!el.getAttribute('src')) return; l.classList.add('err'); l.textContent=lang==='ja'?'読み込めませんでした':"Couldn't load"; }
+  else l.remove();
+}
+['load','loadeddata','error'].forEach(ev=>document.addEventListener(ev,slotLoaded,true));
+/* card videos start only when they are (nearly) on screen, and pause when they leave */
+let previewIO=null;
+function observePreviews(){
+  if(!previewIO) previewIO=new IntersectionObserver(es=>es.forEach(en=>{
+    const v=en.target;
+    if(en.isIntersecting){
+      if(!v.getAttribute('src')) v.src=v.dataset.src;
+      v.play().catch(()=>{});
+    } else v.pause();
+  }),{rootMargin:'250px 0px'});
+  document.querySelectorAll('video[data-preview]').forEach(v=>previewIO.observe(v));
 }
 function esc(s){return s.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
 function renderCards(){
@@ -978,6 +1018,7 @@ function renderCards(){
       return `<article class="card" data-launch="${esc(w.launch||'')}"><div class="slot">${mediaTag(w.media,true)}${hint}</div><div class="body"><h4>${esc(t)}</h4>${(w.company||w.year)?`<div class="meta">${co?`<span class="co">${esc(co)}</span>`:''}${w.year?`<span class="year">${esc(String(w.year))}</span>`:''}</div>`:''}<p>${esc(d)}</p></div></article>`;
     }).join('');
   });
+  observePreviews();
 }
 
 /* ---- card video = 5 second looping preview ---- */
@@ -996,10 +1037,17 @@ function openCard(card){
   const backdrop=document.createElement('div'); backdrop.className='lb-backdrop';
   const box=document.createElement('article'); box.className='lb-card';
   box.innerHTML=card.innerHTML;
-  const v=box.querySelector('video');
+  const v=box.querySelector('video'), im=box.querySelector('.slot img[data-full]');
+  const slot=box.querySelector('.slot');
+  if((v&&v.dataset.full)||(im&&im.dataset.full)){    // thumbnails -> the real file (shows "Loading…" until it arrives)
+    const old=slot.querySelector('.loading'); if(old) old.remove();
+    slot.insertAdjacentHTML('beforeend',loadingTag());
+  }
+  if(im&&im.dataset.full){ im.removeAttribute('loading'); im.src=im.dataset.full; }
   if(v){                                  // full video with controls
-    v.removeAttribute('data-preview'); v.loop=true; v.muted=false; v.controls=true;
-    v.currentTime=0; v.play().catch(()=>{ v.muted=true; v.play().catch(()=>{}); });
+    v.removeAttribute('data-preview'); v.loop=true; v.muted=false; v.controls=true; v.preload='auto';
+    if(v.dataset.full){ v.src=v.dataset.full; }
+    v.play().catch(()=>{ v.muted=true; v.play().catch(()=>{}); });
   }
   backdrop.appendChild(box); document.body.appendChild(backdrop);
   const flip=()=>{                        // transform that makes the box look like the card
